@@ -11,7 +11,9 @@ var LoginView = React.createClass({
     return {
       username: "",
       password: "",
-      loginOrReg: true
+      email: "",
+      loginOrReg: true,
+      errorMsg: ""
     };
   },
   handleSubmit: function(){
@@ -45,6 +47,36 @@ var LoginView = React.createClass({
       password: ev.target.value
     })
   },
+  updateEmail:function(ev){
+    this.setState({
+      email: ev.target.value
+    })
+  },
+  updateError:function(msg){
+    this.setState({
+      errorMsg: msg
+    })
+  },
+  handleRegister:function(){
+    var backToLogin = this.backToLogin
+    var updateError = this.updateError
+    if (this.state.username != "" && this.state.password != "" && this.state.email != ""){
+      $.post("/register/", {
+        username: this.state.username,
+        password: this.state.password,
+        email: this.state.email
+      }, function(data){
+        if (data == "Regist Success"){
+          backToLogin()
+          updateError("")
+        }else{
+          updateError(data)
+        }
+      })
+    }else{
+      updateError("Missing Required Information")
+    }
+  },
   render: function() {
     if (this.state.loginOrReg){
       return (
@@ -68,6 +100,9 @@ var LoginView = React.createClass({
             <button type="button" onClick={this.handleSubmit} className="btn btn-default loginButton">Login</button>
             <button type="button" onClick={this.registerRequest} className="btn btn-default registerButton">Register</button>
           </form>
+          <div className="error">
+            <p>{this.state.errorMsg}</p>
+          </div>
         </div>
       );
     }else{
@@ -80,23 +115,26 @@ var LoginView = React.createClass({
             <div className = "form-group">
               <label htmlFor="username" className="col-sm-2 col-md-2 col-lg-2 control-label">Username</label>
               <div className = "col-sm-10 col-md-10 col-lg-10">
-                <input type = "text" className = "form-control" id = "username" placeholder="Username" />
+                <input type = "text" className = "form-control" id = "username" placeholder="Username" value={this.state.username} onChange={this.updateUsername}/>
               </div>
             </div>
             <div className="form-group">
               <label htmlFor="password" className="col-sm-2 col-md-2 col-lg-2 control-label">Password</label>
               <div className = "col-sm-10 col-md-10 col-lg-10">
-                <input type="password" className="form-control" id = "password" placeholder="Password" />
+                <input type="password" className="form-control" id = "password" placeholder="Password" value={this.state.password} onChange={this.updatePassword}/>
               </div>
             </div>
             <div className="form-group">
               <label htmlFor="email" className="col-sm-2 col-md-2 col-lg-2 control-label">Email</label>
               <div className = "col-sm-10 col-md-10 col-lg-10">
-                <input type="email" className="form-control" id = "password" placeholder="email" />
+                <input type="email" className="form-control" id = "password" placeholder="email" value={this.state.email} onChange={this.updateEmail}/>
               </div>
             </div>
-            <button type="button" onClick={this.handleSubmit} className="btn btn-default loginButton">Login</button>
+            <button type="button" onClick={this.handleRegister} className="btn btn-default registerButton">Register</button>
             <button type="button" onClick={this.backToLogin} className="btn btn-default backButton">Back</button>
+            <div className="error">
+              <p>{this.state.errorMsg}</p>
+            </div>
           </form>
         </div>
       )

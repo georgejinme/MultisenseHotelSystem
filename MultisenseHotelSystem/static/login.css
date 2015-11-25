@@ -35,7 +35,7 @@ body{
 	color: white;
 }
 
-.login .loginButton, .register .loginButton{
+.login .loginButton, .register .registerButton{
 	width: 100%;
 	margin-top: 20px;
 	border-radius: 0px;
@@ -47,9 +47,16 @@ body{
 .login .registerButton, .register .backButton{
 	width: 100%;
 	margin-top: 20px;
-	margin-bottom: 40px;
+	margin-bottom: 20px;
 	border-radius: 0px;
 	background-color: #EEAD0E;
 	border: none;
 	color: white
+}
+
+.error{
+	text-align: center;
+	padding-bottom: 10px;
+	color: red;
+	font-size: 25px;
 }
