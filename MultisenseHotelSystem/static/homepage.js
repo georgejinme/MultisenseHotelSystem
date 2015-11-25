@@ -1,32 +1,46 @@
 var SideBar = React.createClass({
-  //todo
+  
   getInitialState: function(){
-    if (this.props.userType == "manager"){
-      return {
-        activeBar: ["active", "nonactive", "nonactive", "nonactive"]
+    var type = []
+    for (var i = 0; i < this.props.functions.length; ++i){
+      if (i == 0){
+        type.push("active")
+      }else{
+        type.push("nonactive")
       }
     }
-    return {activeBar: ["active", "nonactive", "nonactive", "nonactive"]}
+    return {
+      activeBar: type
+    }
   },
-  render:function(){
+  render: function(){
+    var status = this.state.activeBar
+    var handle = this.handleNavClick
     return (
         <div className="col-sm-3 col-md-2 sidebar">
+          <div className="userInfo">
+            <img src="/static/img/2.jpg" className="img-circle"></img>
+            <p>{this.props.userName}</p>
+          </div>
           <ul className="nav nav-sidebar">
-            <li className="active" onClick = {this.handleBarClick}><a id = "0" href="#">Overview</a></li>
-            <li onClick = {this.handleBarClick}><a id = "1" href="#">Reports</a></li>
-            <li onClick = {this.handleBarClick}><a id = "2" href="#">Analytics</a></li>
-            <li onClick = {this.handleBarClick}><a id = "3" href="#">Export</a></li>
+            {
+              this.props.functions.map(function(i, index){
+              return (
+                <li className={status[index]} onClick = {handle}><a id = {index} href="#">{i}</a></li>
+              )})
+            }
           </ul>
         </div>
     )
   },
-  handleBarClick:function(ev){
+
+  handleNavClick: function(ev){
     var type = []
-    for (var i = 0; i < this.state.userType.length; ++i){
+    for (var i = 0; i < this.props.functions.length; ++i){
       if (i == ev.target.id){
-        type.push(true)
+        type.push("active")
       }else{
-        type.push(false)
+        type.push("nonactive")
       }
     }
     this.setState({
@@ -46,17 +60,13 @@ var Main = React.createClass({
 
 
 var HomePage = React.createClass({
-  getInitialState: function(){
-    return {
-      userType: "manager"
-    }
-  },
   render: function() {
     return (
       <div className = "container-fluid">
         <div className="row">
           <SideBar
-            userType = {this.state.userType}
+            functions = {["Overview", "Reports", "Analysis", "Export"]}
+            userName = {"Jin Jiajun's Wife"}
           ></SideBar>
           <Main />
         </div>
