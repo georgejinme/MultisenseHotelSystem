@@ -1,0 +1,44 @@
+body{
+	background-image: url(/static/img/background.jpg);
+	background-size: 100%;
+}
+
+.login{
+	width: 40%;
+	position: relative;
+	margin: auto;
+	margin-top: 10%;
+	background-color: rgba(0,0,0,0.2);
+}
+
+.login .logo{
+	font-size: 40px;
+	text-align: center;
+	padding-top: 30px;
+	color: white;
+}
+
+.login .loginForm{
+	margin-left: 30px;
+	margin-right: 30px;
+	color: white;
+}
+
+.login .loginForm input{
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-radius: 0px;
+	background-color: rgba(0,0,0,0);
+	box-shadow: none;
+}
+
+.login .loginButton{
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 50px;
+	border-radius: 0px;
+	background-color: #EEAD0E;
+	border: none;
+	color: white
+}
