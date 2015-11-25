@@ -13,6 +13,16 @@ var LoginView = React.createClass({
       password: ""
     };
   },
+  handleSubmit: function(){
+    $.post("/loginCheck/", {
+      username: this.state.username,
+      password: this.state.password
+    }, function(data){
+      if (data == "fuck"){
+        window.location.href = "/homepage/"
+      }
+    })
+  },
   render: function() {
     return (
       <div className = "login">
@@ -30,7 +40,7 @@ var LoginView = React.createClass({
               <input type="password" className="form-control" id="password" placeholder="Password" />
             </div>
           </div>
-          <button type="submit" className="btn btn-default loginButton">Login</button>
+          <button type="button" onClick={this.handleSubmit} className="btn btn-default loginButton">Login</button>
         </form>
       </div>
     );
