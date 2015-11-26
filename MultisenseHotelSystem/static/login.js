@@ -17,14 +17,21 @@ var LoginView = React.createClass({
     };
   },
   handleSubmit: function(){
-    $.post("/loginCheck/", {
-      username: this.state.username,
-      password: this.state.password
-    }, function(data){
-      if (data == "fuck"){
-        window.location.href = "/homepage/"
-      }
-    })
+    var updateError = this.updateError
+    if (this.state.username != "" && this.state.password != ""){
+      $.post("/loginCheck/", {
+        username: this.state.username,
+        password: this.state.password
+      }, function(data){
+        if (data == "Login Success"){
+          window.location.href = "/homepage/"
+        }else{
+          updateError(data)
+        }
+      })
+    }else{
+      updateError("Missing Required Information")
+    }
   },
   registerRequest: function(){
     this.setState({

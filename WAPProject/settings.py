@@ -82,7 +82,7 @@ DATABASES = {
     }
 }
 
-
+SESSION_COOKIE_AGE = 60 * 60 * 24
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

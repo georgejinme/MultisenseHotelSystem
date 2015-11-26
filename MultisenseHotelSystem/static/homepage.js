@@ -1,21 +1,15 @@
 var SideBar = React.createClass({
-  
-  getInitialState: function(){
+
+  render: function(){
+    var handle = this.props.handleNavClick
     var type = []
     for (var i = 0; i < this.props.functions.length; ++i){
-      if (i == 0){
+      if (i == this.props.activeFunc){
         type.push("active")
       }else{
         type.push("nonactive")
       }
     }
-    return {
-      activeBar: type
-    }
-  },
-  render: function(){
-    var status = this.state.activeBar
-    var handle = this.handleNavClick
     return (
         <div className="col-sm-3 col-md-2 sidebar">
           <div className="userInfo">
@@ -26,27 +20,13 @@ var SideBar = React.createClass({
             {
               this.props.functions.map(function(i, index){
               return (
-                <li className={status[index]} onClick = {handle}><a id = {index} href="#">{i}</a></li>
+                <li className={type[index]} onClick = {handle}><a id = {index} href="#">{i}</a></li>
               )})
             }
           </ul>
         </div>
     )
   },
-
-  handleNavClick: function(ev){
-    var type = []
-    for (var i = 0; i < this.props.functions.length; ++i){
-      if (i == ev.target.id){
-        type.push("active")
-      }else{
-        type.push("nonactive")
-      }
-    }
-    this.setState({
-      activeBar: type
-    })
-  }
 })
 
 var Main = React.createClass({
@@ -60,19 +40,62 @@ var Main = React.createClass({
 
 
 var HomePage = React.createClass({
+  getInitialState:function(){
+    return {
+      username: "NULL",
+      updated: false,
+      functions: ["Overview", "Reports", "Analysis", "Export", "Log Out"],
+      activeFunc: 0
+    }
+  },
   render: function() {
     return (
       <div className = "container-fluid">
         <div className="row">
           <SideBar
-            functions = {["Overview", "Reports", "Analysis", "Export"]}
-            userName = {"Jin Jiajun's Wife"}
+            functions = {this.state.functions}
+            userName = {this.state.username}
+            handleNavClick = {this.handleNavClick}
+            activeFunc = {this.state.activeFunc}
           ></SideBar>
           <Main />
         </div>
       </div>
     )
+  },
+
+  componentDidMount:function(){
+    var update = this.updateInfo
+    if (!this.state.updated){
+      $.get("/getUserInfo/", function(data){
+        update(data)
+      })
+    }
+  },
+
+//update User Info
+  updateInfo: function(name){
+    this.setState({
+      username: name,
+      updated: true
+    })
+  },
+  handleNavClick: function(ev){
+    //Log out
+    console.log(ev.target.id)
+    if (ev.target.id == this.state.functions.length - 1){
+      $.get(/logout/, function(data){
+        if (data == "Log Out success"){
+          console.log("log out success")
+          window.location.href = "/login/"
+        }
+      })
+    }
+    this.setState({
+      activeFunc: ev.target.id
+    })
   }
+
 })
 
 React.render(

@@ -21,5 +21,8 @@ urlpatterns = [
     url(r'^login/', 'MultisenseHotelSystem.views.login', name = "login"),
     url(r'^homepage/', 'MultisenseHotelSystem.views.homepage', name = "homepage"),
     url(r'^loginCheck/', 'MultisenseHotelSystem.views.loginCheck', name = "loginCheck"),
-    url(r'^register/', 'MultisenseHotelSystem.views.register', name = "register")
+    url(r'^register/', 'MultisenseHotelSystem.views.register', name = "register"),
+
+    url(r'^getUserInfo/', 'MultisenseHotelSystem.views.getUserInfo', name = "getUserInfo"),
+    url(r'^logout/', 'MultisenseHotelSystem.views.logout', name = "logout")
 ]
