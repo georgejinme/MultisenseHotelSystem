@@ -4,7 +4,6 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 
 ##Features
 
----
 #####Customers
 
 - Booking and Purchasing
@@ -29,7 +28,6 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 - Automatically Login
 - Beautiful User Interface
 
----
 
 ##Requirements
 ##### Web
@@ -46,7 +44,6 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 - If you found a bug, open an issue.
 - If you have any questions and advice about this system, please contact with by [WeChat: wxhncc0309]()
 
----
 
 ##Screenshots
 #####Web
@@ -58,7 +55,6 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 
 #####iOS
 
----
 
 ##Implementation
 #####Web Front-end
@@ -74,12 +70,9 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 - Swift 2.0
 - Alamofire
 
----
 
 ##TODO
 - User Interface of Homepage
-
----
 
 ##License
 MIT license
