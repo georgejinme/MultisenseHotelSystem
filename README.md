@@ -36,7 +36,6 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 ##### iOS App
 - iOS 8.0+
 
----
 
 
 ##Communication
