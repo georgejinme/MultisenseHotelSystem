@@ -83,7 +83,6 @@ var HomePage = React.createClass({
   },
 //click event
   navClickHandle: function(ev){
-    console.log(ev.target.id)
     if (ev.target.id == this.state.functions.length){
       $.get(/logout/, function(data){
         if (data == "Log Out success"){
@@ -103,3 +102,4 @@ React.render(
   <HomePage />,
   document.getElementById('content')
 );
+
