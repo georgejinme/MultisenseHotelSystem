@@ -14,7 +14,7 @@ var SideBar = React.createClass({
       }
     }
     return (
-        <div className="col-sm-3 col-md-2 col-lg-2 sidebar">
+        <div className="col-sm-3 col-md-3 col-lg-3 sidebar">
           <div className="userInfo">
             <img src="/static/img/2.jpg" className="img-circle"></img>
             <p>{this.props.userName}</p>
@@ -37,13 +37,13 @@ var Main = React.createClass({
   render:function(){
     if (this.props.currentFunc == "Overview"){
       return (
-        <div className = "col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2 main">
-          <CustomerOverview />
+        <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
+          <Overview />
         </div>
       )
     }else{
       return (
-        <div className = "col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2 main">
+        <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
           
         </div>
       )
@@ -122,17 +122,14 @@ var HomePage = React.createClass({
   }
 })
 
-/**
-  Customer View
-*/
-var CustomerOverview = React.createClass({
+var Overview = React.createClass({
   render: function(){
     return (
       <div className = "overview">
         <div className = "header">
           <h1>Multisense Hotel</h1>
         </div>
-        
+
         <div className = "seperator"></div>
         <div className = "description">
           <p>"This is software for people who work in hotel crossing the country: sales manager, receptionist, and so on. "</p><p>"Managers can grasp of each hotel' s condition, and make a plan of the benefits next season or year. In addition, our system will provide different price strategies to managers and help them to make proper decisions."</p><p>"For receptionists, they can easily check today's bill and respond to the booking request from customers."</p><p>" What's more, our system is also useful for customers. We provide personal service for each customer and help them to enjoy themselves."</p><p>"Anyone can benefit from our system in multi-ways and really make sense, so we call this system 'Multisense Hotel Management System' "</p>
@@ -188,7 +185,9 @@ var CustomerOverview = React.createClass({
   }
 })
 
-
+/**
+  Customer View
+*/
 
 React.render(
   <HomePage />,
