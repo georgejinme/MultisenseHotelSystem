@@ -76,7 +76,6 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 ##FAQ
 #####Why don't use React-Router?
 Exposing URL is dangerous in this project because a customer may access to the pages of a manager if they know the url.
-
 Although codes seem to be a little complex, it reduces the work to identify the users.
 
 ##License
