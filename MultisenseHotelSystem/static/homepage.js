@@ -1,7 +1,7 @@
 var SideBar = React.createClass({
 
   render: function(){
-    var handle = this.props.handleNavClick
+    var handle = this.props.navClickHandle
     var type = []
     for (var i = 0; i < this.props.functions.length; ++i){
       if (i == this.props.activeFunc){
@@ -23,6 +23,7 @@ var SideBar = React.createClass({
                 <li className={type[index]} onClick = {handle}><a id = {index} href="#">{i}</a></li>
               )})
             }
+            <li className="nonactive" onClick = {handle}><a id = {type.length} href="#">Log Out</a></li>
           </ul>
         </div>
     )
@@ -44,7 +45,7 @@ var HomePage = React.createClass({
     return {
       username: "NULL",
       updated: false,
-      functions: ["Overview", "Reports", "Analysis", "Export", "Log Out"],
+      functions: ["Overview", "Reports", "Analysis", "Export"],
       activeFunc: 0
     }
   },
@@ -55,7 +56,7 @@ var HomePage = React.createClass({
           <SideBar
             functions = {this.state.functions}
             userName = {this.state.username}
-            handleNavClick = {this.handleNavClick}
+            navClickHandle = {this.navClickHandle}
             activeFunc = {this.state.activeFunc}
           ></SideBar>
           <Main />
@@ -80,10 +81,10 @@ var HomePage = React.createClass({
       updated: true
     })
   },
-  handleNavClick: function(ev){
-    //Log out
+//click event
+  navClickHandle: function(ev){
     console.log(ev.target.id)
-    if (ev.target.id == this.state.functions.length - 1){
+    if (ev.target.id == this.state.functions.length){
       $.get(/logout/, function(data){
         if (data == "Log Out success"){
           console.log("log out success")
