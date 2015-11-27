@@ -6,7 +6,7 @@ var Logo = React.createClass({
   }
 })
 
-var LoginView = React.createClass({
+var MainView = React.createClass({
   getInitialState: function(){
     return {
       username: "",
@@ -150,6 +150,6 @@ var LoginView = React.createClass({
 });
 
 React.render(
-  <LoginView />,
+  <MainView />,
   document.getElementById('content')
 );
