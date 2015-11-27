@@ -1,5 +1,8 @@
-var SideBar = React.createClass({
+/**
+  Common view
+*/
 
+var SideBar = React.createClass({
   render: function(){
     var handle = this.props.navClickHandle
     var type = []
@@ -11,7 +14,7 @@ var SideBar = React.createClass({
       }
     }
     return (
-        <div className="col-sm-3 col-md-2 sidebar">
+        <div className="col-sm-3 col-md-2 col-lg-2 sidebar">
           <div className="userInfo">
             <img src="/static/img/2.jpg" className="img-circle"></img>
             <p>{this.props.userName}</p>
@@ -32,10 +35,19 @@ var SideBar = React.createClass({
 
 var Main = React.createClass({
   render:function(){
-    return (
-      <div className = "col-sm-9 col-md-10 main">
-      </div>
-    )
+    if (this.props.currentFunc == "Overview"){
+      return (
+        <div className = "col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2 main">
+          <CustomerOverview />
+        </div>
+      )
+    }else{
+      return (
+        <div className = "col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2 main">
+          
+        </div>
+      )
+    }
   }
 })
 
@@ -59,13 +71,15 @@ var HomePage = React.createClass({
             navClickHandle = {this.navClickHandle}
             activeFunc = {this.state.activeFunc}
           ></SideBar>
-          <Main />
+          <Main
+            currentFunc = {this.state.functions[this.state.activeFunc]}
+          ></Main>
         </div>
       </div>
     )
   },
 
-  componentDidMount:function(){
+  componentWillMount:function(){
     var update = this.updateInfo
     if (!this.state.updated){
       $.get("/getUserInfo/", function(data){
@@ -75,10 +89,21 @@ var HomePage = React.createClass({
   },
 
 //update User Info
-  updateInfo: function(name){
+  updateInfo: function(userinfo){
+    var name = userinfo['username']
+    var type = userinfo['type']
+    var funcs = []
+    if (type == "Customer"){  
+      funcs = ["Overview", "Reservation", "Recommendation", "Meals", "My Info"]
+    }else if (type == "Receptionist"){
+      funcs = ["Overview", "Rooms", "My Info"]
+    }else{
+      funcs = ["Overview", "Sales Info", "Human Resources", "My Info"]
+    }
     this.setState({
       username: name,
-      updated: true
+      updated: true,
+      functions: funcs
     })
   },
 //click event
@@ -95,8 +120,75 @@ var HomePage = React.createClass({
       activeFunc: ev.target.id
     })
   }
-
 })
+
+/**
+  Customer View
+*/
+var CustomerOverview = React.createClass({
+  render: function(){
+    return (
+      <div className = "overview">
+        <div className = "header">
+          <h1>Multisense Hotel</h1>
+        </div>
+        
+        <div className = "seperator"></div>
+        <div className = "description">
+          <p>"This is software for people who work in hotel crossing the country: sales manager, receptionist, and so on. "</p><p>"Managers can grasp of each hotel' s condition, and make a plan of the benefits next season or year. In addition, our system will provide different price strategies to managers and help them to make proper decisions."</p><p>"For receptionists, they can easily check today's bill and respond to the booking request from customers."</p><p>" What's more, our system is also useful for customers. We provide personal service for each customer and help them to enjoy themselves."</p><p>"Anyone can benefit from our system in multi-ways and really make sense, so we call this system 'Multisense Hotel Management System' "</p>
+        </div>
+        <div className = "graph">
+          <div id="myCarousel" className="carousel slide" data-ride="carousel">
+            <ol className="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" className="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <div className="carousel-inner" role="listbox">
+              <div className="item active">
+                <img className="first-slide" src="/static/img/overview/1.jpg" alt="First slide"></img>
+                <div className="container">
+                  <div className="carousel-caption">
+                    <h1>Single Room</h1>
+                    <p>"Come in and enjoy"</p>
+                  </div>
+                </div>
+              </div>
+              <div className="item">
+                <img className="second-slide" src="/static/img/overview/2.jpg" alt="Second slide"></img>
+                <div className="container">
+                  <div className="carousel-caption">
+                    <h1>Standard Room</h1>
+                    <p>"Here is amazing. Amazing is here."</p>
+                  </div>
+                </div>
+              </div>
+              <div className="item">
+                <img className="third-slide" src="/static/img/overview/3.jpg" alt="Third slide"></img>
+                <div className="container">
+                  <div className="carousel-caption">
+                    <h1>Business Room</h1>
+                    <p>"Tired or not?"</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a className="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+              <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              <span className="sr-only">Previous</span>
+            </a>
+            <a className="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+              <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              <span className="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+})
+
+
 
 React.render(
   <HomePage />,

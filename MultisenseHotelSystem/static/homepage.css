@@ -61,3 +61,67 @@ body{
 	color:white;
 	font-size: 20px;
 }
+
+
+.main .overview{
+	margin-top: 70px;
+}
+
+.main .overview .header h1{
+	color: #fff;
+	font-size: 90px;
+}
+
+.main .overview .seperator{
+	position: relative;
+	background-color: #fff;
+	height: 2px;
+}
+
+.main .overview .description{
+	position: relative;
+	color: white;
+	margin-top: 10px;
+}
+
+.main .overview .graph{
+	width: 97%;
+	height: 600px;
+	margin-top: 20px;
+	background-color: rgba(0,0,0,0.3);
+}
+
+/* Carousel base class */
+.main .overview .carousel {
+	padding-top: 3%;
+  	height: 500px;
+}
+
+.main .overview .carousel-indicators{
+	bottom: -25px;
+}
+
+/* Since positioning the image, we need to help out the caption */
+.main .overview .carousel-caption {
+  	z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.main .overview .carousel .item {
+  	height: 500px;
+}
+
+.main .overview .carousel-inner > .item > img {
+  	position: absolute;
+  	top: 0;
+  	left: 0;
+  	min-width: 100%;
+  	height: 500px;
+}
+
+.main .overview .carousel-control.left, .main .overview .carousel-control.right{
+	margin-top: 3%;
+	height: 500px
+}
+
+

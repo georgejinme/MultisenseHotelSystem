@@ -51,5 +51,5 @@ def homepage(request):
 		return HttpResponseRedirect("/login/")
 
 def getUserInfo(request):
-	res = request.user.username
+	res = {"username": request.user.username, "type": request.user.first_name}
 	return JsonResponse(res, safe = False)
