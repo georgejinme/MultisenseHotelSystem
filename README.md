@@ -47,10 +47,10 @@ Multisense Hotel System is a modern hotel system for managers, receptionists and
 ##Screenshots
 #####Web
 - Login View
-![img](file:///Users/gougoumemeda/Desktop/CS/work/works\ application/screenshots/Snip20151126_6.png =800x400)
+![img](https://github.com/gougoumemeda/MultisenseHotelSystem/blob/master/readmegraph/Snip20151126_6.png =800x400)
 
 - Home Page
-![img](file:///Users/gougoumemeda/Desktop/CS/work/works\ application/screenshots/Snip20151127_7.png =800x400)
+![img](https://github.com/gougoumemeda/MultisenseHotelSystem/blob/master/readmegraph/Snip20151127_7.png =800x400)
 
 #####iOS
 
