@@ -128,7 +128,7 @@ body{
 
 .main .reservation{
 	background-color: rgba(0,0,0,0.3);
-	height: 400px;
+	height: 600px;
 	margin-top: 40px;
 	width: 97%
 }
@@ -145,11 +145,18 @@ body{
 	border-right: 0px;
 	background-color: rgba(0,0,0,0);
 	box-shadow: none;
+	color: white;
 }
 
 .main .reservation .searchBar .btn-search{
 	background-color: #436EEE;
 	color: white;
+}
+
+.main .reservation #map{
+	width: 97%;
+	height: 500px;	
+	margin-left: 15px;
 }
 
 

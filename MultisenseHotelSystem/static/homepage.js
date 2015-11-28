@@ -61,7 +61,6 @@ var HomePage = React.createClass({
   getInitialState:function(){
     return {
       username: "NULL",
-      updated: false,
       functions: ["Overview", "Reservation", "Recommendation", "Meals", "My Info"],
       activeFunc: 0
     }
@@ -86,11 +85,9 @@ var HomePage = React.createClass({
 
   componentWillMount:function(){
     var update = this.updateInfo
-    if (!this.state.updated){
-      $.get("/getUserInfo/", function(data){
-        update(data)
-      })
-    }
+    $.get("/getUserInfo/", function(data){
+      update(data)
+    })
   },
 
 //update User Info
@@ -107,7 +104,6 @@ var HomePage = React.createClass({
     }
     this.setState({
       username: name,
-      updated: true,
       functions: funcs
     })
   },
@@ -204,7 +200,7 @@ var CustomerReservationSearchBar = React.createClass({
             <div className = "col-sm-8 col-md-8 col-lg-8">
               <input type = "text" className = "form-control" id = "username" placeholder="Places" value={this.props.searchInfo} onChange={this.props.updateSearchInfo} />
             </div>
-            <a href="javascript:void(0);" className="btn btn-search col-sm-2 col-md-2 col-lg-2">Search</a>
+            <a href="javascript:void(0);" className="btn btn-search col-sm-2 col-md-2 col-lg-2" onClick = {this.props.searchHandler}>Search</a>
           </div>
         </form>
       </div>
@@ -212,10 +208,56 @@ var CustomerReservationSearchBar = React.createClass({
   },
 })
 
+
+var CustomerReservationMap = React.createClass({
+  getDefaultProps: function(){
+    return {
+      searchInfo: "如家"
+    }
+  },
+  getInitialState:function(){
+    return {
+      map: ""
+    }
+  },
+  render: function(){
+    if (this.props.searchBegin){
+      this.search()
+    }
+    return (
+      <div id = "map">
+      </div>
+    )
+  },
+  componentDidMount: function(){
+    var realmap = new AMap.Map("map", {
+        resizeEnable: true
+    })
+    this.setState({
+      map: realmap
+    })
+  },
+
+  search: function(){
+    var searchInfo = this.props.searchInfo
+    var realmap = this.state.map
+    AMap.service(["AMap.PlaceSearch"], function() {
+        var placeSearch = new AMap.PlaceSearch({ 
+            pageSize: 5,
+            pageIndex: 1,
+            map: realmap
+        });
+        placeSearch.search(searchInfo, function(status, result) {
+        });
+    });
+  }
+})
+
 var CustomerReservation = React.createClass({
   getInitialState:function(){
     return {
-      searchInfo: ""
+      searchInfo: "",
+      searchBegin: false
     }
   },
   render: function(){
@@ -224,13 +266,24 @@ var CustomerReservation = React.createClass({
         <CustomerReservationSearchBar
           updateSearchInfo = {this.updateSearchInfo}
           searchInfo = {this.state.searchInfo}
+          searchHandler = {this.searchHandler}
         ></CustomerReservationSearchBar>
+        <CustomerReservationMap
+          searchInfo = {this.state.searchInfo}
+          searchBegin = {this.state.searchBegin}
+        ></CustomerReservationMap>
       </div>
     )
   },
   updateSearchInfo: function(ev){
     this.setState({
+      searchBegin: false,
       searchInfo: ev.target.value
+    })
+  },
+  searchHandler: function(){
+    this.setState({
+      searchBegin: true
     })
   }
 })
