@@ -233,6 +233,12 @@ var CustomerReservationMap = React.createClass({
     var realmap = new AMap.Map("map", {
         resizeEnable: true
     })
+    AMap.plugin(['AMap.ToolBar','AMap.Scale'],function(){
+      var toolBar = new AMap.ToolBar();
+      var scale = new AMap.Scale();
+      realmap.addControl(toolBar);
+      realmap.addControl(scale);
+  })
     this.setState({
       map: realmap
     })
@@ -241,14 +247,25 @@ var CustomerReservationMap = React.createClass({
   search: function(){
     var searchInfo = this.props.searchInfo
     var realmap = this.state.map
+
     AMap.service(["AMap.PlaceSearch"], function() {
         var placeSearch = new AMap.PlaceSearch({ 
-            pageSize: 5,
-            pageIndex: 1,
-            map: realmap
+            pageSize: 50,
         });
         placeSearch.search(searchInfo, function(status, result) {
-        });
+          var res = result['poiList']['pois']
+          var centerPos = new AMap.LngLat(res[0]['location']['lng'],res[0]['location']['lat'])
+          for (var i = 0; i < res.length; ++i) {
+            console.log(res[i])
+            var pos = new AMap.LngLat(res[i]['location']['lng'],res[i]['location']['lat'])
+            var marker = new AMap.Marker({
+              position: pos,
+              map: realmap
+            });
+          }
+          realmap.setZoom(11);
+          realmap.setCenter(centerPos);
+      });
     });
   }
 })
