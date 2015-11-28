@@ -2,6 +2,9 @@ body{
 	background-image: url(/static/img/background.jpg);
 	background-size: 100%;
 	background-repeat: no-repeat;
+	font-family: 'Source Sans Pro';
+	font-weight: 300;
+	font-style: normal;
 }
 
 .login, .register{
@@ -13,7 +16,7 @@ body{
 }
 
 .login .logo, .register .logo{
-	font-size: 40px;
+	font-size: 45px;
 	text-align: center;
 	padding-top: 30px;
 	color: white;

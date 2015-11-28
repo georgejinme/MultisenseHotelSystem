@@ -41,10 +41,15 @@ var Main = React.createClass({
           <Overview />
         </div>
       )
+    }else if (this.props.currentFunc == "Reservation"){
+      return (
+        <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
+          <CustomerReservation />
+        </div>
+      )
     }else{
       return (
         <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
-          
         </div>
       )
     }
@@ -57,7 +62,7 @@ var HomePage = React.createClass({
     return {
       username: "NULL",
       updated: false,
-      functions: ["Overview", "Reports", "Analysis", "Export"],
+      functions: ["Overview", "Reservation", "Recommendation", "Meals", "My Info"],
       activeFunc: 0
     }
   },
@@ -186,8 +191,50 @@ var Overview = React.createClass({
 })
 
 /**
-  Customer View
+  Customer Reservation View
 */
+
+var CustomerReservationSearchBar = React.createClass({
+  render: function(){
+    return(
+      <div className = "searchBar">
+        <form className = "form-horizontal searchForm">
+          <div className = "form-group">
+            <label htmlFor="searchLabel" className="col-sm-2 col-md-2 col-lg-2 control-label">Places</label>
+            <div className = "col-sm-8 col-md-8 col-lg-8">
+              <input type = "text" className = "form-control" id = "username" placeholder="Places" value={this.props.searchInfo} onChange={this.props.updateSearchInfo} />
+            </div>
+            <a href="javascript:void(0);" className="btn btn-search col-sm-2 col-md-2 col-lg-2">Search</a>
+          </div>
+        </form>
+      </div>
+    )
+  },
+})
+
+var CustomerReservation = React.createClass({
+  getInitialState:function(){
+    return {
+      searchInfo: ""
+    }
+  },
+  render: function(){
+    return (
+      <div className = "reservation">
+        <CustomerReservationSearchBar
+          updateSearchInfo = {this.updateSearchInfo}
+          searchInfo = {this.state.searchInfo}
+        ></CustomerReservationSearchBar>
+      </div>
+    )
+  },
+  updateSearchInfo: function(ev){
+    this.setState({
+      searchInfo: ev.target.value
+    })
+  }
+})
+
 
 React.render(
   <HomePage />,
