@@ -305,6 +305,13 @@ var CustomerReservation = React.createClass({
   }
 })
 
+/** 
+  Manager Sales Info View
+*/
+
+
+
+
 
 React.render(
   <HomePage />,

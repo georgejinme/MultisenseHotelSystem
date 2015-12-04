@@ -18,6 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^initial/', 'MultisenseHotelSystem.views.initial', name = "initial"),
+
     url(r'^login/', 'MultisenseHotelSystem.views.login', name = "login"),
     url(r'^homepage/', 'MultisenseHotelSystem.views.homepage', name = "homepage"),
     url(r'^loginCheck/', 'MultisenseHotelSystem.views.loginCheck', name = "loginCheck"),
