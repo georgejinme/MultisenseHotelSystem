@@ -317,8 +317,62 @@ var CustomerReservation = React.createClass({
 var ManagerSalesInfo = React.createClass({
   render: function(){
     return(
-      <div>
+      <div className = "salesInfo">
+        <ManagerSalesInfoPlan />
+        <ManagerSalesInfoSelection />
       </div>
+    )
+  }
+})
+
+var ManagerSalesInfoPlan = React.createClass({
+  render: function(){
+    return (
+      <div className = "salesInfoPlan">
+        <p>PLAN</p>
+      </div>
+    )
+  }
+})
+
+var ManagerSalesInfoSelection = React.createClass({
+  render: function(){
+    return (
+      <div className = "salesInfoSelection">
+        <div className = "row">
+          <div className="btn-group col-sm-4 col-md-4 col-lg-4">
+            <a href="#" className="btn btn-primary selectionBtn">Hotel</a>
+            <a href="#" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+            <ul className="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+          <div className="btn-group col-sm-4 col-md-4 col-lg-4">
+            <a href="#" className="btn btn-primary selectionBtn">Type</a>
+            <a href="#" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+            <ul className="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+          <div className="btn-group col-sm-4 col-md-4 col-lg-4">
+            <a href="#" className="btn btn-primary selectionBtn">Time</a>
+            <a href="#" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+            <ul className="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     )
   }
 })

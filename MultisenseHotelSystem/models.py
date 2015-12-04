@@ -24,5 +24,6 @@ class SalesInfo(models.Model):
 	sale_number = models.IntegerField()
 	sale_time = models.IntegerField()
 	sale_type = models.CharField(max_length = 20)
+	sale_hotel = models.CharField(max_length = 100)
 	def __unicode__(self):
 		return str(self.id)

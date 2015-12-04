@@ -159,4 +159,35 @@ body{
 	margin-left: 15px;
 }
 
+.main .salesInfo{
+	background-color: rgba(0,0,0,0.3);
+	height: 600px;
+	margin-top: 40px;
+	width: 97%
+}
+
+.main .salesInfo .salesInfoPlan{
+	height: 200px;
+	font-size: 100px;
+	color: white;
+}
+.main .salesInfo .salesInfoSelection .row{
+	padding: 0px;
+	margin: 0px;
+}
+
+.main .salesInfo .salesInfoSelection .row .btn-group{
+	padding: 0px;
+	margin: 0px;
+}
+
+.main .salesInfo .salesInfoSelection .row .btn-group .dropdown-menu{
+	width: 100%;
+}
+
+.main .salesInfo .salesInfoSelection .row .btn-group .selectionBtn{
+	width: 88%;
+}
+
+
 
