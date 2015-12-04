@@ -19,3 +19,10 @@ class Hotel(models.Model):
 	hotel_room = models.ManyToManyField(Room)
 	def __unicode__(self):
 		return self.hotel_name + "|" + self.hotel_address + "|" + self.hotel_tel
+
+class SalesInfo(models.Model):
+	sale_number = models.IntegerField()
+	sale_time = models.IntegerField()
+	sale_type = models.CharField(max_length = 20)
+	def __unicode__(self):
+		return str(self.id)

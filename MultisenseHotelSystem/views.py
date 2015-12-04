@@ -6,6 +6,9 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from MultisenseHotelSystem.models import Hotel
 from MultisenseHotelSystem.models import Room
+from MultisenseHotelSystem.models import SalesInfo
+import datetime
+import time
 
 #initial database
 def initial(request):
@@ -71,6 +74,31 @@ def initial(request):
 			p.save()
 			h.hotel_room.add(p)
 	'''
+	'''for i in range(0, 6):
+		currtime = time.mktime(datetime.datetime.now().timetuple())
+		s = SalesInfo(sale_number = 230, sale_time = int(currtime), sale_type = "SINGLE")
+		s.save()
+	for i in range(0, 10):
+		currtime = time.mktime(datetime.datetime.now().timetuple())
+		s = SalesInfo(sale_number = 200, sale_time = int(currtime), sale_type = "DOUBLE")
+		s.save()
+	for i in range(0, 3):
+		currtime = time.mktime(datetime.datetime.now().timetuple())
+		s = SalesInfo(sale_number = 190, sale_time = int(currtime), sale_type = "SEMIDOUBLE")
+		s.save()
+	for i in range(0, 9):
+		currtime = time.mktime(datetime.datetime.now().timetuple())
+		s = SalesInfo(sale_number = 200, sale_time = int(currtime), sale_type = "TWIN")
+		s.save()
+	for i in range(0, 2):
+		currtime = time.mktime(datetime.datetime.now().timetuple())
+		s = SalesInfo(sale_number = 210, sale_time = int(currtime), sale_type = "TRIPLE")
+		s.save()
+	for i in range(0, 1):
+		currtime = time.mktime(datetime.datetime.now().timetuple())
+		s = SalesInfo(sale_number = 230, sale_time = int(currtime), sale_type = "SUITE")
+		s.save()
+	return HttpResponse("initial success")'''
 	return HttpResponse("initial error: you have already initialized.")
 
 
