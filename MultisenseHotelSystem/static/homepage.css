@@ -66,7 +66,7 @@ body{
 }
 
 .main .overview{
-	margin-top: 40px;
+	margin-top: 20px;
 }
 
 .main .overview .header h1{
@@ -129,7 +129,7 @@ body{
 .main .reservation{
 	background-color: rgba(0,0,0,0.3);
 	height: 600px;
-	margin-top: 40px;
+	margin-top: 20px;
 	width: 97%
 }
 
@@ -161,8 +161,7 @@ body{
 
 .main .salesInfo{
 	background-color: rgba(0,0,0,0.3);
-	height: 600px;
-	margin-top: 40px;
+	margin-top: 20px;
 	width: 97%
 }
 
@@ -187,6 +186,26 @@ body{
 
 .main .salesInfo .salesInfoSelection .row .btn-group .selectionBtn{
 	width: 88%;
+}
+
+.main .salesInfo .salesInfoChart{
+	text-align: center;
+	color: white;
+}
+
+.main .salesInfo .salesInfoChart #lineChart{
+	margin-top: 10px;
+	margin-left: 10px;
+	height: 400px;
+	width: 97%;
+}
+
+.main .salesInfo .salesInfoChart #pieChart{
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-bottom: 30px;
+	height: 700px;
+	width: 97%;
 }
 
 

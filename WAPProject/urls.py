@@ -24,7 +24,11 @@ urlpatterns = [
     url(r'^homepage/', 'MultisenseHotelSystem.views.homepage', name = "homepage"),
     url(r'^loginCheck/', 'MultisenseHotelSystem.views.loginCheck', name = "loginCheck"),
     url(r'^register/', 'MultisenseHotelSystem.views.register', name = "register"),
-
     url(r'^getUserInfo/', 'MultisenseHotelSystem.views.getUserInfo', name = "getUserInfo"),
-    url(r'^logout/', 'MultisenseHotelSystem.views.logout', name = "logout")
+    url(r'^logout/', 'MultisenseHotelSystem.views.logout', name = "logout"),
+
+    #sales info
+    url(r'^getHotelNameAndRoomType/', 'MultisenseHotelSystem.views.getHotelNameAndRoomType', name = "getHotelNameAndRoomType"),
+    url(r'^getSalesInfoWithTime/', 'MultisenseHotelSystem.views.getSalesInfoWithTime', name = "getSalesInfoWithTime"),
+    url(r'^getSalesInfoWithHotelAndType/', 'MultisenseHotelSystem.views.getSalesInfoWithHotelAndType', name = "getSalesInfoWithHotelAndType"),
 ]

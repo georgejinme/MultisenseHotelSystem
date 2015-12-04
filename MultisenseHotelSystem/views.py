@@ -7,6 +7,7 @@ from django.contrib.auth import logout as auth_logout
 from MultisenseHotelSystem.models import Hotel
 from MultisenseHotelSystem.models import Room
 from MultisenseHotelSystem.models import SalesInfo
+from django.utils import timezone
 import datetime
 import time
 
@@ -164,3 +165,157 @@ def homepage(request):
 def getUserInfo(request):
 	res = {"username": request.user.username, "type": request.user.first_name}
 	return JsonResponse(res, safe = False)
+
+#manager sales info
+def getHotelNameAndRoomType(request):
+	hotels = {"name": ["ALL"], "type": ["ALL", "SINGLE", "DOUBLE", "SEMIDOUBLE", "TWIN", "TRIPLE", "SUITE"]}
+	for i in Hotel.objects.all():
+		hotels["name"].append(i.hotel_name)
+	return JsonResponse(hotels, safe=False)
+
+def getSalesInfoWithTime(request):
+	res = {'timeLabel':[], 'ammount': []}
+	currtime = time.mktime(datetime.datetime.now().timetuple())
+	sales = SalesInfo.objects.all()
+	if (request.POST['time'] == "ALL"):
+		currYear = time.localtime().tm_year
+		for i in range(currYear - 4, currYear + 1):
+			res['timeLabel'].append(i)
+			res['ammount'].append(0)
+		for s in sales:
+			if 4 - (int(currtime) - s.sale_time) / 31507200 >= 0:
+				res['ammount'][4 - (int(currtime) - s.sale_time) / 31507200] += s.sale_number
+			else:
+				break;
+	elif (request.POST['time'] == "Today"):
+		currHour = time.localtime().tm_hour 
+		for i in range(0, currHour + 1):
+			res['timeLabel'].append(i)
+			res['ammount'].append(0)
+		for s in sales:
+			if currHour - (int(currtime) - s.sale_time) / 3600 >= 0:
+				res['ammount'][currHour - (int(currtime) - s.sale_time) / 3600] += s.sale_number
+			else:
+				break;
+	elif (request.POST['time'] == "One Week"):
+		currWeek = time.localtime().tm_wday
+		for i in range(1, currWeek + 1):
+			res['timeLabel'].append(i)
+			res['ammount'].append(0)
+		for s in sales:
+			if currWeek - (int(currtime) - s.sale_time) / 86400 >= 0:
+				res['ammount'][currWeek - 1 - (int(currtime) - s.sale_time) / 86400] += s.sale_number
+			else:
+				break
+	elif (request.POST['time'] == "One Month"):
+		currDay = time.localtime().tm_mday
+		for i in range(1, currDay + 1):
+			res['timeLabel'].append(i)
+			res['ammount'].append(0)
+		for s in sales:
+			if currDay - (int(currtime) - s.sale_time) / 86400 >= 0:
+				res['ammount'][currDay - 1 - (int(currtime) - s.sale_time) / 86400] += s.sale_number
+			else:
+				break;
+	elif (request.POST['time'] == "One Year"):
+		currMonth = time.localtime().tm_mon
+		for i in range(1, currMonth + 1):
+			res['timeLabel'].append(i)
+			res['ammount'].append(0)
+		for s in sales:
+			if currMonth - (int(currtime) - s.sale_time) / 2625600 >= 0:
+				res['ammount'][currMonth - 1 - (int(currtime) - s.sale_time) / 2625600] += s.sale_number
+			else:
+				break;
+
+	return JsonResponse(res, safe=False)
+
+
+def getSalesInfoWithHotelAndType(request):
+	hotel = request.POST['hotel']
+	typeN = request.POST['type']
+	currtime = time.mktime(datetime.datetime.now().timetuple())
+	res = {"hotel": [], "type": [], "amount": []}
+	if (request.POST['priority'] == "hotel"):
+		typeN = "ALL"
+	elif (request.POST['priority'] == "type"):
+		hotel = "ALL"
+	sales = ""
+	if (hotel == "ALL"):
+		if (typeN != "ALL"):
+			sales = SalesInfo.objects.filter(sale_type=typeN)
+		else:
+			sales = SalesInfo.objects.all()
+		for i in Hotel.objects.all():
+			res['hotel'].append(i.hotel_name)
+			res['amount'].append(0)
+		if request.POST['time'] == "ALL":
+			for s in sales:
+				res['amount'][res['hotel'].index(s.sale_hotel)] += s.sale_number
+		elif request.POST['time'] == "Today":
+			currHour = time.localtime().tm_hour
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 3600 <= currHour:
+					res['amount'][res['hotel'].index(s.sale_hotel)] += s.sale_number
+				else:
+					break;
+		elif request.POST['time'] == "One Week":
+			currWeek = time.localtime().tm_wday
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 86400 <= currWeek:
+					res['amount'][res['hotel'].index(s.sale_hotel)] += s.sale_number
+				else:
+					break;
+		elif request.POST['time'] == "One Month":
+			currDay = time.localtime().tm_mday
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 86400 <= currDay:
+					res['amount'][res['hotel'].index(s.sale_hotel)] += s.sale_number
+				else:
+					break;
+		elif request.POST['time'] == "One Year":
+			currMonth = time.localtime().tm_mon
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 2625600 <= currMonth:
+					res['amount'][res['hotel'].index(s.sale_hotel)] += s.sale_number
+				else:
+					break;
+	else:
+		sales = SalesInfo.objects.filter(sale_hotel=hotel)
+		res['type'] = ["SINGLE", "DOUBLE", "SEMIDOUBLE", "TWIN", "TRIPLE", "SUITE"]
+		res['amount'] = [0, 0, 0, 0, 0, 0]
+		if request.POST['time'] == "ALL":
+			for s in sales:
+				res['amount'][res['type'].index(s.sale_type)] += s.sale_number
+		elif request.POST['time'] == "Today":
+			currHour = time.localtime().tm_hour
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 3600 <= currHour:
+					res['amount'][res['type'].index(s.sale_type)] += s.sale_number
+				else:
+					break;
+		elif request.POST['time'] == "One Week":
+			currWeek = time.localtime().tm_wday
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 86400 <= currWeek:
+					res['amount'][res['type'].index(s.sale_type)] += s.sale_number
+				else:
+					break;
+		elif request.POST['time'] == "One Month":
+			currDay = time.localtime().tm_mday
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 86400 <= currDay:
+					res['amount'][res['type'].index(s.sale_type)] += s.sale_number
+				else:
+					break;
+		elif request.POST['time'] == "One Year":
+			currMonth = time.localtime().tm_mon
+			for s in sales:
+				if (int(currtime) - s.sale_time) / 2625600 <= currMonth:
+					res['amount'][res['type'].index(s.sale_type)] += s.sale_number
+				else:
+					break;
+	return JsonResponse(res, safe=False)
+
+
+

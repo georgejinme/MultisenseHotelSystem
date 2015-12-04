@@ -244,7 +244,7 @@ var CustomerReservationMap = React.createClass({
       var scale = new AMap.Scale();
       realmap.addControl(toolBar);
       realmap.addControl(scale);
-  })
+    })
     this.setState({
       map: realmap
     })
@@ -315,13 +315,75 @@ var CustomerReservation = React.createClass({
   Manager Sales Info View
 */
 var ManagerSalesInfo = React.createClass({
+  getInitialState: function(){
+    return {
+      hotelName: ["ALL"],
+      typeName: ["ALL"],
+      timeName: ["ALL", "Today", "One Week", "One Month", "One Year"],
+      selectedHotel: 0,
+      selectedType: 0,
+      selectedTime: 0,
+      priority: "hotel",
+      first: true
+    }
+  },
+  componentWillMount: function(){
+    var update = this.updateInfo
+    $.get("/getHotelNameAndRoomType/", function(data){
+      update(data)
+    })
+  },
+
   render: function(){
     return(
       <div className = "salesInfo">
         <ManagerSalesInfoPlan />
-        <ManagerSalesInfoSelection />
+        <ManagerSalesInfoSelection 
+          hotelName = {this.state.hotelName}
+          typeName = {this.state.typeName}
+          timeName = {this.state.timeName}
+          selectionClicked = {this.handleSelection}
+          hotelSelected = {this.state.hotelName[this.state.selectedHotel]}
+          typeSelected = {this.state.typeName[this.state.selectedType]}
+          timeSelected = {this.state.timeName[this.state.selectedTime]}
+          priority = {this.state.priority}
+        ></ManagerSalesInfoSelection>
+        <ManagerSalesInfoChart
+          hotelName = {this.state.hotelName[this.state.selectedHotel]}
+          typeName = {this.state.typeName[this.state.selectedType]}
+          timeName = {this.state.timeName[this.state.selectedTime]}
+          first = {this.state.first}
+          priority = {this.state.priority}
+        ></ManagerSalesInfoChart>
       </div>
     )
+  },
+  updateInfo: function(data){
+    this.setState({
+      hotelName: data["name"],
+      typeName: data["type"]
+    })
+  },
+  handleSelection: function(ev){
+    var res = ev.target.id.split("|")
+    if (res[0] == "hotel"){
+      this.setState({
+        selectedHotel: res[1],
+        first: false,
+        priority: res[0]
+      })
+    }else if (res[0] == "type"){
+      this.setState({
+        selectedType: res[1],
+        first: false,
+        priority: res[0]
+      })
+    }else if (res[0] == "time"){
+      this.setState({
+        selectedTime: res[1],
+        first: false
+      })
+    }
   }
 })
 
@@ -337,43 +399,157 @@ var ManagerSalesInfoPlan = React.createClass({
 
 var ManagerSalesInfoSelection = React.createClass({
   render: function(){
+    var handle = this.props.selectionClicked
+    var hotel = this.props.hotelSelected
+    var time = this.props.timeSelected
+    var type = this.props.typeSelected
+    var priority = this.props.priority
+    if (hotel == "ALL" || priority == "type"){
+      hotel = "Hotel"
+    }
+    if (time == "ALL"){
+      time = "Time"
+    }
+    if (type == "ALL" || priority == "hotel"){
+      type = "Type"
+    }
     return (
       <div className = "salesInfoSelection">
         <div className = "row">
           <div className="btn-group col-sm-4 col-md-4 col-lg-4">
-            <a href="#" className="btn btn-primary selectionBtn">Hotel</a>
-            <a href="#" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+            <a href="javascript:void(0);" className="btn btn-primary selectionBtn">{hotel}</a>
+            <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li><a href="#">Separated link</a></li>
+              {
+                this.props.hotelName.map(function(i, index){
+                return (
+                  <li onClick = {handle}><a id = {"hotel|" + index} href="javascript:void(0);">{i}</a></li>
+                )})
+              }
             </ul>
           </div>
           <div className="btn-group col-sm-4 col-md-4 col-lg-4">
-            <a href="#" className="btn btn-primary selectionBtn">Type</a>
-            <a href="#" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+            <a href="javascript:void(0);" className="btn btn-primary selectionBtn">{type}</a>
+            <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li><a href="#">Separated link</a></li>
+              {
+                this.props.typeName.map(function(i, index){
+                return (
+                  <li onClick = {handle}><a id = {"type|" + index} href="javascript:void(0);">{i}</a></li>
+                )})
+              }
             </ul>
           </div>
           <div className="btn-group col-sm-4 col-md-4 col-lg-4">
-            <a href="#" className="btn btn-primary selectionBtn">Time</a>
-            <a href="#" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+            <a href="javascript:void(0);" className="btn btn-primary selectionBtn">{time}</a>
+            <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li><a href="#">Separated link</a></li>
+              {
+                this.props.timeName.map(function(i, index){
+                return (
+                  <li onClick = {handle}><a id = {"time|" + index} href="javascript:void(0);">{i}</a></li>
+                )})
+              }
             </ul>
           </div>
         </div>
       </div>
 
     )
+  }
+})
+
+var ManagerSalesInfoChart = React.createClass({
+  render: function(){
+    if (!this.props.first){
+      this.getChartData()
+    }
+    return (
+      <div className = "salesInfoChart">
+        <canvas id="lineChart"></canvas>
+        <p>Line Chart of Time and Benefits</p>
+        <canvas id="pieChart"></canvas>
+        <p>Pie Chart of Hotel and Room Type</p>
+      </div>
+    )
+  },
+
+  componentDidMount: function(){
+    this.getChartData()
+  },
+
+  getChartData: function(){
+    var hoteln = this.props.hotelName
+    var typen = this.props.typeName
+    var timen = this.props.timeName
+    var priorityn = this.props.priority
+    $.post("/getSalesInfoWithTime/",{ 
+        time: timen
+      },function(returnData){
+        var option = {
+          scaleLineColor : "rgba(255,255,255,1)",
+          scaleGridLineColor : "rgba(255,255,255,.1)",
+          scaleFontColor : "#FFF"
+        }
+        var data = {
+          labels : returnData['timeLabel'],
+          datasets : [
+            {
+              fillColor : "rgba(220,220,220,0.5)",
+              strokeColor : "rgba(220,220,220,1)",
+              pointColor : "rgba(220,220,220,1)",
+              pointStrokeColor : "#fff",
+              data : returnData['ammount']
+            }
+          ]
+        }
+        $("#lineChart").remove()
+        $(".salesInfoChart").prepend("<canvas id=\"lineChart\"></canvas>")
+        var canvas = document.getElementById("lineChart")
+        var ctx = canvas.getContext("2d");
+        var charts = new Chart(ctx).Line(data, option);
+    })
+    $.post("/getSalesInfoWithHotelAndType/",{
+        hotel: hoteln,
+        type: typen,
+        time: timen,
+        priority: priorityn
+      }, function(returnData){
+        var data = []
+        var colors = ["#FFE4B5", "#FF4040", "#76EE00", "#556B2F", "#4169E1", "#00E5EE", "#8B3626", "#8C8C8C",
+                      "#9B30FF", "#EEEE00", "#2E8B57", "#00EE76", "#0000FF", "#87CEFA", "#8B4789", "#B8860B",
+                      "#DEB887", "#FFFF00", "#FF6EB4", "#262626", "#48D1CC"]
+        var highlightColors = ["#FFEBCD", "#FF6A6A", "#7CFC00", "#548B54", "#4876FF", "#00F5FF", "#8B4500", "#A8A8A8",
+                              "#9F79EE", "#F0E68C", "#3CB371", "#00FF00", "#1E90FF", "#87CEFF", "#8B668B", "#CD9B1D",
+                              "#EEC591", "#FFF68F", "#FF83FA", "#474747", "#40E0D0"]
+        if (returnData['type'].length == 0){
+          for (var i = 0; i < returnData['hotel'].length; ++i){
+            data.push({
+              value: returnData['amount'][i],
+              color: colors[i],
+              highlight: highlightColors[i],
+              label: returnData['hotel'][i]
+            })
+          }            
+        }else if (returnData['hotel'].length == 0){
+          for (var i = 0; i < returnData['type'].length; ++i){
+            data.push({
+              value: returnData['amount'][i],
+              color: colors[i],
+              highlight: highlightColors[i],
+              label: returnData['type'][i]
+            })
+          }    
+        }
+        var option = {
+          segmentShowStroke: false
+        }
+        $("#pieChart").remove()
+        $(".salesInfoChart").append("<canvas id=\"pieChart\"></canvas>")
+        var canvas = document.getElementById("pieChart")
+        var ctx = canvas.getContext("2d");
+        var charts = new Chart(ctx).Pie(data, option);
+    })
   }
 })
 
