@@ -129,12 +129,14 @@ def initial(request):
 	r = Receptionist(name = "xinr", gender = "female", address = "Shanghai Dongchuan Road No.800", hotel = "Magic Castle Hotel", authorityUser = u)
 	r.save()
 	print User.objects.get(username = "xinr")'''
-	m = Meals(name = "Hamburger Cambo", price = 30)
+	'''m = Meals(name = "Hamburger Cambo", price = 30)
 	m.save()
 	m = Meals(name = "Sausage Cambo", price = 20)
 	m.save()
 	m = Meals(name = "Potato Cambo", price = 15)
 	m.save()
+	m = Meals(name = "Cheese Cambo", price = 25)
+	m.save()'''
 	return HttpResponse("initial error: you have already initialized.")
 
 
@@ -403,5 +405,20 @@ def reserve(request):
 			return JsonResponse({"success": False, "error": "Error: You have booked one room"}, safe=False)
 		else:
 			return JsonResponse({"success": False, "error": "Error: Unknown error"}, safe=False)
+
+# Customer order meal
+def checkOrderMealAuthority(request):
+	if request.user.customer.hotel != None:
+		if request.user.customer.hotel.room_status == "occupied":
+			return JsonResponse({"success": True}, safe=False)
+	return JsonResponse({"success": False}, safe=False) 
+
+def getMealInfo(request):
+	res = {'name': [], "price": []}
+	meal = Meals.objects.all()
+	for m in meal:
+		res['name'].append(m.name)
+		res['price'].append(m.price)
+	return JsonResponse(res, safe=False) 
 
 

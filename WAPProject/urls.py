@@ -43,4 +43,8 @@ urlpatterns = [
     #reservation
     url(r'^roomInfo/', 'MultisenseHotelSystem.views.roomInfo', name = "roomInfo"),
     url(r'^reserve/', 'MultisenseHotelSystem.views.reserve', name = "reserve"),
+
+    #order meal
+    url(r'^checkOrderMealAuthority/', 'MultisenseHotelSystem.views.checkOrderMealAuthority', name = "checkOrderMealAuthority"),
+    url(r'^getMealInfo/', 'MultisenseHotelSystem.views.getMealInfo', name = "getMealInfo"),
 ]

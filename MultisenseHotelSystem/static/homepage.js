@@ -438,11 +438,89 @@ var CustomerReservation = React.createClass({
   Customer Order Meal View
 */
 var CustomerMeal = React.createClass({
+  getInitialState: function(){
+    return {
+      authority: false,
+      mealName: [],
+      mealPrice: [],
+      mealNum: []
+    }
+  },
+  componentWillMount: function(){
+    var update = this.updateAuthority
+    var updateMeal = this.updateMealInfo
+    $.get("/checkOrderMealAuthority/", function(data){
+      if (data['success']){
+        update(true)
+        $.get("/getMealInfo/", function(mealdata){
+          updateMeal(mealdata)
+        })
+      }
+    })
+  },
   render: function(){
-    return (
-      <div className = "meal">
-      </div>
-    )
+    var rowsNum = []
+    var mealName = this.state.mealName
+    var mealPrice = this.state.mealprice
+    for (var i = 0; i <= this.state.mealName.length / 3; ++i){
+      rowsNum.push(i)
+    }
+    if (this.state.authority == true){
+      return (
+        <div className = "meal">
+        {
+          rowsNum.map(function(i, index){
+            var mealname = mealName
+            console.log(mealname)
+            var mealprice = mealPrice
+            return (
+              <div className = "mealRow row">
+              {
+                [0 + 3 * i, 1 + 3 * i, 2 + 3 * i].map(function(a, b){
+                  if (a >= mealname.length){
+                    return (
+                      <div className = "mealItem col-sm-4 col-md-4 col-lg-4">
+                      </div>
+                    )
+                  }else{
+                    return (
+                      <div className = "mealItem col-sm-4 col-md-4 col-lg-4">
+                        <p className = "mealname">{a}</p>
+                        <p className = "mealprice">123</p>
+                      </div>
+                    )
+                  }
+                })
+              }
+              </div>
+            )
+          })
+        }
+        </div>
+      )
+    }else{
+      return (
+        <div className = "noauthority">
+          <p>You should book a room first</p>
+        </div>
+      )
+    }
+  },
+  updateAuthority: function(flag){
+    this.setState({
+      authority: flag
+    })
+  },
+  updateMealInfo: function(info){
+    var num = []
+    for (var i = 0; i < info['name'].length; ++i){
+      num.push(0)
+    }
+    this.setState({
+      mealName: info['name'],
+      mealPrice: info['price'],
+      mealNum: num
+    })
   }
 })
 

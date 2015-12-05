@@ -206,6 +206,16 @@ body{
 	height: 400px;
 }
 
+.main .noauthority{
+	background-color: rgba(0,0,0,0.3);
+	margin-top: 20px;
+	width: 97%;
+	height: 70px;
+	text-align: center;
+	font-size: 50px;
+	color: white;
+}
+
 .main .salesInfo{
 	background-color: rgba(0,0,0,0.3);
 	margin-top: 20px;
