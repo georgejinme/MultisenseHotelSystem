@@ -10,6 +10,7 @@ from MultisenseHotelSystem.models import SalesInfo
 from MultisenseHotelSystem.models import Staff
 from MultisenseHotelSystem.models import Receptionist
 from MultisenseHotelSystem.models import Customer
+from MultisenseHotelSystem.models import Meals
 from django.utils import timezone
 import datetime
 import time
@@ -128,6 +129,12 @@ def initial(request):
 	r = Receptionist(name = "xinr", gender = "female", address = "Shanghai Dongchuan Road No.800", hotel = "Magic Castle Hotel", authorityUser = u)
 	r.save()
 	print User.objects.get(username = "xinr")'''
+	m = Meals(name = "Hamburger Cambo", price = 30)
+	m.save()
+	m = Meals(name = "Sausage Cambo", price = 20)
+	m.save()
+	m = Meals(name = "Potato Cambo", price = 15)
+	m.save()
 	return HttpResponse("initial error: you have already initialized.")
 
 

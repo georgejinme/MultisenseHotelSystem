@@ -199,6 +199,13 @@ body{
 	color: white;
 }
 
+.main .meal{
+	background-color: rgba(0,0,0,0.3);
+	margin-top: 20px;
+	width: 97%;
+	height: 400px;
+}
+
 .main .salesInfo{
 	background-color: rgba(0,0,0,0.3);
 	margin-top: 20px;

@@ -65,12 +65,19 @@ var Main = React.createClass({
           <ReceptionistCheckBill />
         </div>
       )
+    }else if (this.props.currentFunc == "Meals"){
+      return (
+        <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
+          <CustomerMeal />
+        </div>
+      )
     }else{
       return (
         <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
         </div>
       )
     }
+
   }
 })
 
@@ -424,6 +431,18 @@ var CustomerReservation = React.createClass({
     this.setState({
       page: 1
     })
+  }
+})
+
+/**
+  Customer Order Meal View
+*/
+var CustomerMeal = React.createClass({
+  render: function(){
+    return (
+      <div className = "meal">
+      </div>
+    )
   }
 })
 

@@ -28,6 +28,12 @@ class SalesInfo(models.Model):
 	def __unicode__(self):
 		return str(self.id)
 
+class Meals(models.Model):
+	name = models.CharField(max_length = 40)
+	price = models.IntegerField()
+	def __unicode__(self):
+		return str(self.id) + "|" + self.name + "|" + str(self.price)
+
 class Staff(models.Model):
 	staff_name = models.CharField(max_length = 40)
 	staff_gender = models.CharField(max_length = 10)
@@ -56,5 +62,7 @@ class Customer(models.Model):
 	passpord = models.CharField(max_length = 100)
 	tel = models.CharField(max_length = 30)
 	authorityUser = models.OneToOneField(User)
+	meals = models.ManyToManyField(Meals)
 	def __unicode__(self):
 		return str(self.id) + "|" + self.name
+
