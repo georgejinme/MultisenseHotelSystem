@@ -39,4 +39,7 @@ urlpatterns = [
     #today's bill info
     url(r'^todayInfo/', 'MultisenseHotelSystem.views.todayInfo', name = "todayInfo"),
     url(r'^hotelInfo/', 'MultisenseHotelSystem.views.hotelInfo', name = "hotelInfo"),
+
+    #reservation
+    url(r'^roomInfo/', 'MultisenseHotelSystem.views.roomInfo', name = "roomInfo"),
 ]

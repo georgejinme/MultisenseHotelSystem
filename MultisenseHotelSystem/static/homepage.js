@@ -218,7 +218,7 @@ var CustomerReservationSearchBar = React.createClass({
             <div className = "col-sm-8 col-md-8 col-lg-8">
               <input type = "text" className = "form-control" id = "username" placeholder="Places" value={this.props.searchInfo} onChange={this.props.updateSearchInfo} />
             </div>
-            <a href="javascript:void(0);" className="btn btn-search col-sm-2 col-md-2 col-lg-2" onClick = {this.props.searchHandler}>Search</a>
+            <a href="javascript:void(0);" className="btn btn-primary col-sm-2 col-md-2 col-lg-2" onClick = {this.props.searchHandler}>Search</a>
           </div>
         </form>
       </div>
@@ -288,27 +288,83 @@ var CustomerReservationMap = React.createClass({
   }
 })
 
+var CustomerReservationChoose = React.createClass({
+  getInitialState: function(){
+    return {
+      types: ["Loading"],
+      rest: ["0"]
+    }
+  },
+  componentWillMount: function(){
+    var update = this.updateHotelInfo
+    $.post("/roomInfo/",{
+      hotel: this.props.hotel
+    }, function(returnData){
+      update(returnData)
+    })
+  },
+  render: function(){
+    var rest = this.state.rest
+    return (
+      <div className = "reserveChoose">
+        <form className = "form-horizontal hotelDetail">
+        {
+          this.state.types.map(function(i, index){
+            return (
+              <div className = "form-group">
+                <label htmlFor="hotelLabel" className="col-sm-9 col-md-9 col-lg-9 control-label">{i}: {rest[index]} rooms available</label>
+                <a href="javascript:void(0);" className="btn btn-primary col-sm-3 col-md-3 col-lg-3" onClick = {this.reserve}>Reserve</a>
+              </div>
+            )
+          })
+        }
+        </form>
+      </div>
+    )
+  },
+  updateHotelInfo: function(data){
+    this.setState({
+      types: data['type'],
+      rest: data['rest']
+    })
+  },
+  reserve: function(){
+    console.log(123)
+  }
+})
+
 var CustomerReservation = React.createClass({
   getInitialState:function(){
     return {
       searchInfo: "",
-      searchBegin: false
+      searchBegin: false,
+      page: 0,
+      hotel: "Magic Castle Hotel"
     }
   },
   render: function(){
-    return (
-      <div className = "reservation">
-        <CustomerReservationSearchBar
-          updateSearchInfo = {this.updateSearchInfo}
-          searchInfo = {this.state.searchInfo}
-          searchHandler = {this.searchHandler}
-        ></CustomerReservationSearchBar>
-        <CustomerReservationMap
-          searchInfo = {this.state.searchInfo}
-          searchBegin = {this.state.searchBegin}
-        ></CustomerReservationMap>
-      </div>
-    )
+    if (this.state.page == 0){
+      return (
+        <div className = "reservation">
+          <CustomerReservationSearchBar
+            updateSearchInfo = {this.updateSearchInfo}
+            searchInfo = {this.state.searchInfo}
+            searchHandler = {this.searchHandler}
+          ></CustomerReservationSearchBar>
+          <CustomerReservationMap
+            searchInfo = {this.state.searchInfo}
+            searchBegin = {this.state.searchBegin}
+          ></CustomerReservationMap>
+          <a href="javascript:void(0);" className="btn btn-primary reserveButton" onClick = {this.handleReserve}>Reserve</a>
+        </div>
+      )
+    }else{
+      return (
+        <CustomerReservationChoose
+          hotel = {this.state.hotel}
+        ></CustomerReservationChoose>
+      )
+    }
   },
   updateSearchInfo: function(ev){
     this.setState({
@@ -319,6 +375,11 @@ var CustomerReservation = React.createClass({
   searchHandler: function(){
     this.setState({
       searchBegin: true
+    })
+  },
+  handleReserve: function(){
+    this.setState({
+      page: 1
     })
   }
 })

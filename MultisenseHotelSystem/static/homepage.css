@@ -128,7 +128,6 @@ body{
 
 .main .reservation{
 	background-color: rgba(0,0,0,0.3);
-	height: 600px;
 	margin-top: 20px;
 	width: 97%
 }
@@ -157,6 +156,37 @@ body{
 	width: 97%;
 	height: 500px;	
 	margin-left: 15px;
+}
+
+.main .reservation .reserveButton{
+	width: 100%;
+	margin-top: 15px;
+}
+
+.main .reserveChoose{
+	width: 97%;
+	background-color: rgba(0,0,0,0.3);
+	margin-top: 20px;
+	position: relative;
+}
+
+.main .reserveChoose .hotelDetail{
+	margin-top: 20px;
+	padding-top: 20px;
+}
+
+.main .reserveChoose .hotelDetail .form-group{
+	width: 98%;
+	padding: 0px;
+	margin: 0px;
+	margin-right: 10px;
+	padding-bottom: 20px;
+}
+.main .reserveChoose .hotelDetail .form-group label{
+	text-align: left;
+	color:white;
+	font-size: 20px;
+	font-weight: lighter;
 }
 
 .main .salesInfo{

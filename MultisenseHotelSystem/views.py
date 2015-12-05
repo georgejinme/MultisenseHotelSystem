@@ -367,6 +367,17 @@ def hotelInfo(request):
 	return JsonResponse(res, safe=False)
 
 
-
+# Customer Reservation
+def roomInfo(request):
+	res = {'type':["SINGLE", "DOUBLE", "SEMIDOUBLE", "TWIN", "TRIPLE", "SUITE"], 'rest': [0, 0, 0, 0, 0, 0]}
+	hotel = request.POST['hotel']
+	room = Room.objects.filter(room_status = "available")
+	for r in room:
+		if (r.hotel_set.all().exists()):
+			h = r.hotel_set.all()[0]
+			if h.hotel_name == hotel:
+				if r.room_type != "OTHER":
+					res['rest'][res['type'].index(r.room_type)] += 1
+	return JsonResponse(res, safe=False)
 
 
