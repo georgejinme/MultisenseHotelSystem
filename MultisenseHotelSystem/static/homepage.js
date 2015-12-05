@@ -567,13 +567,13 @@ var ManagerHumanResources = React.createClass({
   getInitialState: function(){
     return {
       staffInfo: [],
-      selectedStaff: -1
+      selectedStaff: -1,
+      sort: 1
     }
   },
   componentWillMount: function(){
     var update = this.updateInfo
     $.get("/getStaffInfo/", function(data){
-      console.log(data['staff'].length)
       update(data['staff'])
     })
   },
@@ -583,10 +583,10 @@ var ManagerHumanResources = React.createClass({
         <table className="table table-striped table-hover ">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Gender</th>
-              <th>Rank</th>
-              <th>Hotel</th>
+              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "name">Name</a></th>
+              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "gender">Gender</a></th>
+              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "rank">Rank</a></th>
+              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "hotel">Hotel</a></th>
             </tr>
           </thead>
           <tbody>
@@ -610,6 +610,36 @@ var ManagerHumanResources = React.createClass({
     this.setState({
       staffInfo: data
     })
+  },
+  handleSort: function(ev){
+    var staff = this.state.staffInfo
+    var way = this.state.sort
+    staff.sort(this.sortStaff(ev.target.id, 1 - way))
+    this.setState({
+      sort: 1 - way,
+      staffInfo: staff
+    })
+  },
+  sortStaff: function(type, direction){
+    return function(a, b){
+      if (direction == 0){
+        if (a[type] > b[type]){
+          return -1
+        }else if (a[type] == b[type]){
+          return 0
+        }else{
+          return 1
+        }
+      }else{
+        if (a[type] > b[type]){
+          return 1
+        }else if (a[type] == b[type]){
+          return 0
+        }else{
+          return -1
+        }
+      }
+    }
   }
 })
 

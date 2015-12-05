@@ -219,7 +219,12 @@ body{
 }
 
 .main .humanResources tr{
-	background: rgba(0,0,0,0) !important
+	background: rgba(0,0,0,0) !important;
+	text-align:center;
+}
+
+.main .humanResources .btn{
+	width: 100%
 }
 
 
