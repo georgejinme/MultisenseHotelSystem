@@ -189,6 +189,12 @@ body{
 	font-weight: lighter;
 }
 
+.main .reserveChoose .error{
+	color: white;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
 .main .reserveSuccess{
 	color: white;
 }

@@ -293,7 +293,8 @@ var CustomerReservationChoose = React.createClass({
     return {
       types: ["Loading"],
       rest: [0],
-      booked: false
+      booked: false,
+      errormsg: ""
     }
   },
   componentWillMount: function(){
@@ -330,6 +331,9 @@ var CustomerReservationChoose = React.createClass({
             })
           }
           </form>
+          <div className = "error">
+            <p>{this.state.errormsg}</p>
+          </div>
         </div>
       )
     }else{
@@ -348,18 +352,26 @@ var CustomerReservationChoose = React.createClass({
   },
   reserve: function(ev){
     var success = this.reserveSuccess
+    var error = this.reserveError
     $.post("/reserve/", {
       hotel: this.props.hotel,
       type: ev.target.id
     },function(returnData){
       if (returnData['success']){
         success()
+      }else{
+        error(returnData['error'])
       }
     })
   },
   reserveSuccess: function(){
     this.setState({
       booked: true
+    })
+  },
+  reserveError: function(msg){
+    this.setState({
+      errormsg: msg
     })
   }
 })

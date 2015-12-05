@@ -384,10 +384,17 @@ def reserve(request):
 	hotel = request.POST['hotel']
 	types = request.POST['type']
 	hotel = Hotel.objects.get(hotel_name = hotel)
-	if hotel.hotel_room.filter(room_type = types, room_status = "available").exists():
+	if hotel.hotel_room.filter(room_type = types, room_status = "available").exists() and request.user.customer.hotel == None:
 		r = hotel.hotel_room.filter(room_type = types, room_status = "available")[0]
 		r.room_status = "booked"
 		r.save()
-	return JsonResponse({"success": True}, safe=False)
+		request.user.customer.hotel = r
+		request.user.customer.save()
+		return JsonResponse({"success": True}, safe=False)
+	else:
+		if (request.user.customer.hotel != None):
+			return JsonResponse({"success": False, "error": "Error: You have booked one room"}, safe=False)
+		else:
+			return JsonResponse({"success": False, "error": "Error: Unknown error"}, safe=False)
 
 

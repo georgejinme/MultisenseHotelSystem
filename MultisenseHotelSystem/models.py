@@ -52,7 +52,7 @@ class Customer(models.Model):
 	gender = models.CharField(max_length = 10)
 	email = models.CharField(max_length = 40)
 	address = models.CharField(max_length = 500)
-	hotel = models.ForeignKey(Room, null = True)
+	hotel = models.ForeignKey(Room, null = True, blank=True)
 	passpord = models.CharField(max_length = 100)
 	tel = models.CharField(max_length = 30)
 	authorityUser = models.OneToOneField(User)
