@@ -461,7 +461,7 @@ var CustomerMeal = React.createClass({
   render: function(){
     var rowsNum = []
     var mealName = this.state.mealName
-    var mealPrice = this.state.mealprice
+    var mealPrice = this.state.mealPrice
     for (var i = 0; i <= this.state.mealName.length / 3; ++i){
       rowsNum.push(i)
     }
@@ -471,8 +471,9 @@ var CustomerMeal = React.createClass({
         {
           rowsNum.map(function(i, index){
             var mealname = mealName
-            console.log(mealname)
             var mealprice = mealPrice
+            var left = "-"
+            var right = "+"
             return (
               <div className = "mealRow row">
               {
@@ -485,8 +486,18 @@ var CustomerMeal = React.createClass({
                   }else{
                     return (
                       <div className = "mealItem col-sm-4 col-md-4 col-lg-4">
-                        <p className = "mealname">{a}</p>
-                        <p className = "mealprice">123</p>
+                        <div className = "mealPhoto">
+                          <img src="/static/img/3.jpg" className="img-circle"></img>
+                        </div>
+                        <p className = "mealname">{mealname[a]}</p>
+                        <p className = "mealprice">Price: {mealprice[a]}</p>
+                        <div className = "mealorder row">
+                          <a href="#" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2">{left}</a>
+                          <div className = "col-sm-8 col-md-8 col-lg-8 mealNumLabel">
+                            <input type = "text" className = "form-control" placeholder="Amount" />
+                          </div>
+                          <a href="#" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2">{right}</a>
+                        </div>
                       </div>
                     )
                   }

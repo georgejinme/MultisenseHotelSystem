@@ -203,7 +203,50 @@ body{
 	background-color: rgba(0,0,0,0.3);
 	margin-top: 20px;
 	width: 97%;
-	height: 400px;
+}
+
+.main .meal .mealRow{
+	padding-top: 30px;
+}
+
+.main .meal .mealItem .mealPhoto{
+	position: relative;
+	width: 170px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 15px;
+}
+
+.main .meal .mealItem .img-circle{
+	width: 170px;
+	height: 170px;
+}
+
+.main .meal .mealItem p{
+	color: white;
+	text-align: center;
+}
+
+.main .meal .mealorder{
+	padding: 0px;
+	margin: 0px;
+	width: 80%;
+	margin-left: 30px;
+	margin-bottom: 30px;
+}
+
+.main .meal .mealorder .mealNumLabel{
+	padding: 0px;
+}
+
+.main .meal .mealorder .mealNumLabel input{
+	height: 23px;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	background-color: rgba(0,0,0,0);
+	box-shadow: none;
+	color: white;
 }
 
 .main .noauthority{
