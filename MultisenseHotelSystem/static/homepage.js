@@ -486,6 +486,7 @@ var ManagerSalesInfoChart = React.createClass({
     $.post("/getSalesInfoWithTime/",{ 
         time: timen
       },function(returnData){
+        console.log(returnData)
         var option = {
           scaleLineColor : "rgba(255,255,255,1)",
           scaleGridLineColor : "rgba(255,255,255,.1)",

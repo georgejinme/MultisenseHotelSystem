@@ -184,7 +184,7 @@ def getSalesInfoWithTime(request):
 			res['ammount'].append(0)
 		for s in sales:
 			if 4 - (int(currtime) - s.sale_time) / 31507200 >= 0:
-				res['ammount'][4 - (int(currtime) - s.sale_time) / 31507200] += s.sale_number
+				res['ammount'][currYear + 4 - time.localtime(s.sale_time).tm_year] += s.sale_number
 			else:
 				break;
 	elif (request.POST['time'] == "Today"):
@@ -194,7 +194,7 @@ def getSalesInfoWithTime(request):
 			res['ammount'].append(0)
 		for s in sales:
 			if currHour - (int(currtime) - s.sale_time) / 3600 >= 0:
-				res['ammount'][currHour - (int(currtime) - s.sale_time) / 3600] += s.sale_number
+				res['ammount'][time.localtime(s.sale_time).tm_hour] += s.sale_number
 			else:
 				break;
 	elif (request.POST['time'] == "One Week"):
@@ -204,7 +204,7 @@ def getSalesInfoWithTime(request):
 			res['ammount'].append(0)
 		for s in sales:
 			if currWeek - (int(currtime) - s.sale_time) / 86400 >= 0:
-				res['ammount'][currWeek - 1 - (int(currtime) - s.sale_time) / 86400] += s.sale_number
+				res['ammount'][time.localtime(s.sale_time).tm_wday - 1] += s.sale_number
 			else:
 				break
 	elif (request.POST['time'] == "One Month"):
@@ -214,7 +214,7 @@ def getSalesInfoWithTime(request):
 			res['ammount'].append(0)
 		for s in sales:
 			if currDay - (int(currtime) - s.sale_time) / 86400 >= 0:
-				res['ammount'][currDay - 1 - (int(currtime) - s.sale_time) / 86400] += s.sale_number
+				res['ammount'][time.localtime(s.sale_time).tm_mday - 1] += s.sale_number
 			else:
 				break;
 	elif (request.POST['time'] == "One Year"):
@@ -224,7 +224,7 @@ def getSalesInfoWithTime(request):
 			res['ammount'].append(0)
 		for s in sales:
 			if currMonth - (int(currtime) - s.sale_time) / 2625600 >= 0:
-				res['ammount'][currMonth - 1 - (int(currtime) - s.sale_time) / 2625600] += s.sale_number
+				res['ammount'][time.localtime(s.sale_time).tm_mon - 1] += s.sale_number
 			else:
 				break;
 
