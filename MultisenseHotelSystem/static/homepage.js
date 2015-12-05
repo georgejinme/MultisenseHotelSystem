@@ -568,7 +568,9 @@ var ManagerHumanResources = React.createClass({
     return {
       staffInfo: [],
       selectedStaff: [],
-      sort: 1
+      sort: 1,
+      salary: "",
+      errormsg: ""
     }
   },
   componentWillMount: function(){
@@ -608,6 +610,18 @@ var ManagerHumanResources = React.createClass({
           }
           </tbody>
         </table>
+        <form className = "form-horizontal salaryForm">
+          <div className = "form-group">
+            <label htmlFor="salaryLabel" className="col-sm-2 col-md-2 col-lg-2 control-label">Salary</label>
+            <div className = "col-sm-8 col-md-8 col-lg-8">
+              <input type = "text" className = "form-control" id = "username" placeholder="Salary" onChange={this.updateSalaryInfo} />
+            </div>
+            <a href="javascript:void(0);" className="btn btn-primary col-sm-2 col-md-2 col-lg-2" onClick = {this.salaryButtonHandler}>Change Salary</a>
+          </div>
+        </form>
+        <div className = "errormsg">
+          <p>{this.state.errormsg}</p>
+        </div>
       </div>
     )
   },
@@ -658,6 +672,49 @@ var ManagerHumanResources = React.createClass({
     this.setState({
       selectedStaff: selected
     })
+  },
+  updateSalaryInfo: function(ev){
+    this.setState({
+      salary: ev.target.value
+    })
+  },
+  salaryButtonHandler: function(){
+    if (!isNaN(this.state.salary) && this.state.salary != ""){
+      var staff = this.state.staffInfo
+      var selected = this.state.selectedStaff
+      var name = []
+      var error = ""
+      for (var i = 0; i < this.state.selectedStaff.length; ++i){
+        if (selected[i] == 1){
+          staff[i]['salary'] = this.state.salary
+          selected[i] = 0
+          name.push(staff[i]['name'])
+        }
+      }
+      if (name.length == 0){
+        error = "please choose at least one staff"
+      }else{
+        $.post("/changeStaffSalary/", {
+          pname: name.join("|"),
+          psalary: this.state.salary
+        }, function(data){
+          if (!data){
+            error = "Unknown error"
+          }else{
+            error = "Success"
+          }
+        })
+      }
+      this.setState({
+        selectedStaff: selected,
+        staffInfo: staff,
+        errormsg: error
+      })
+    }else{
+      this.setState({
+        errormsg: "not a number"
+      })
+    }
   }
 })
 

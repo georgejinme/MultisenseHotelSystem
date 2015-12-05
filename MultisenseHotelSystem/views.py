@@ -337,7 +337,12 @@ def getStaffInfo(request):
 			res['staff'].append(tmp)
 	return JsonResponse(res, safe=False)
 
-
+def changeStaffSalary(request):
+	name = request.POST['pname'].split("|")
+	salary = request.POST['psalary']
+	for n in name:
+		s = Staff.objects.filter(staff_name = n).update(staff_salary = salary)
+	return JsonResponse({"success": True}, safe=False)
 
 
 
