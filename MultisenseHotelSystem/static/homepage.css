@@ -189,6 +189,10 @@ body{
 	font-weight: lighter;
 }
 
+.main .reserveSuccess{
+	color: white;
+}
+
 .main .salesInfo{
 	background-color: rgba(0,0,0,0.3);
 	margin-top: 20px;

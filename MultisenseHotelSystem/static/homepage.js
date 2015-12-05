@@ -292,7 +292,8 @@ var CustomerReservationChoose = React.createClass({
   getInitialState: function(){
     return {
       types: ["Loading"],
-      rest: ["0"]
+      rest: [0],
+      booked: false
     }
   },
   componentWillMount: function(){
@@ -305,22 +306,39 @@ var CustomerReservationChoose = React.createClass({
   },
   render: function(){
     var rest = this.state.rest
-    return (
-      <div className = "reserveChoose">
-        <form className = "form-horizontal hotelDetail">
-        {
-          this.state.types.map(function(i, index){
-            return (
-              <div className = "form-group">
-                <label htmlFor="hotelLabel" className="col-sm-9 col-md-9 col-lg-9 control-label">{i}: {rest[index]} rooms available</label>
-                <a href="javascript:void(0);" className="btn btn-primary col-sm-3 col-md-3 col-lg-3" onClick = {this.reserve}>Reserve</a>
-              </div>
-            )
-          })
-        }
-        </form>
-      </div>
-    )
+    var reserve = this.reserve
+    var able = []
+    for (var i = 0; i < rest.length; ++i){
+      if (rest[i] == 0){
+        able.push("disabled btn btn-primary col-sm-2 col-md-2 col-lg-2")
+      }else{
+        able.push("btn btn-primary col-sm-2 col-md-2 col-lg-2")
+      }
+    }
+    if (!this.state.booked){
+      return (
+        <div className = "reserveChoose">
+          <form className = "form-horizontal hotelDetail">
+          {
+            this.state.types.map(function(i, index){
+              return (
+                <div className = "form-group">
+                  <label htmlFor="hotelLabel" className="col-sm-10 col-md-10 col-lg-10 control-label">{i}: {rest[index]} rooms available</label>
+                  <a href="javascript:void(0);" className={able[index]} onClick = {reserve} id = {i}>Reserve</a>
+                </div>
+              )
+            })
+          }
+          </form>
+        </div>
+      )
+    }else{
+      return (
+        <div className = "reserveSuccess">
+          <h1>Reserve Successfully</h1>
+        </div>
+      )
+    }
   },
   updateHotelInfo: function(data){
     this.setState({
@@ -328,8 +346,21 @@ var CustomerReservationChoose = React.createClass({
       rest: data['rest']
     })
   },
-  reserve: function(){
-    console.log(123)
+  reserve: function(ev){
+    var success = this.reserveSuccess
+    $.post("/reserve/", {
+      hotel: this.props.hotel,
+      type: ev.target.id
+    },function(returnData){
+      if (returnData['success']){
+        success()
+      }
+    })
+  },
+  reserveSuccess: function(){
+    this.setState({
+      booked: true
+    })
   }
 })
 

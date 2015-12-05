@@ -7,7 +7,7 @@ class Room(models.Model):
 # SINGLE, DOUBLE SEMIDOUBLE, TWIN, TRIPLE, SUITE, OTHER
 	room_type = models.CharField(max_length = 20)
 	room_account = models.IntegerField()
-# available, booked, purchased, occupied
+# available, booked, occupied
 	room_status = models.CharField(max_length = 20)
 	def __unicode__(self):
 		return str(self.id) + "|" + self.room_number + "|" + self.room_type + "|" + self.room_status

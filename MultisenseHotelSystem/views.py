@@ -380,4 +380,14 @@ def roomInfo(request):
 					res['rest'][res['type'].index(r.room_type)] += 1
 	return JsonResponse(res, safe=False)
 
+def reserve(request):
+	hotel = request.POST['hotel']
+	types = request.POST['type']
+	hotel = Hotel.objects.get(hotel_name = hotel)
+	if hotel.hotel_room.filter(room_type = types, room_status = "available").exists():
+		r = hotel.hotel_room.filter(room_type = types, room_status = "available")[0]
+		r.room_status = "booked"
+		r.save()
+	return JsonResponse({"success": True}, safe=False)
+
 
