@@ -567,7 +567,7 @@ var ManagerHumanResources = React.createClass({
   getInitialState: function(){
     return {
       staffInfo: [],
-      selectedStaff: -1,
+      selectedStaff: [],
       sort: 1
     }
   },
@@ -578,6 +578,9 @@ var ManagerHumanResources = React.createClass({
     })
   },
   render: function(){
+    var handleChangeSalary = this.handleChangeSalary
+    var status = ['nonselected', 'selected']
+    var selected = this.state.selectedStaff
     return (
       <div className = "humanResources">
         <table className="table table-striped table-hover ">
@@ -587,17 +590,19 @@ var ManagerHumanResources = React.createClass({
               <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "gender">Gender</a></th>
               <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "rank">Rank</a></th>
               <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "hotel">Hotel</a></th>
+              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "salary">Salary</a></th>
             </tr>
           </thead>
           <tbody>
           {
             this.state.staffInfo.map(function(i, index){
             return (
-              <tr>
-                <td>{i['name']}</td>
-                <td>{i['gender']}</td>
-                <td>{i['rank']}</td>
-                <td>{i['hotel']}</td>
+              <tr onClick = {handleChangeSalary} className = {status[selected[index]]}>
+                <td id = {index + "|name"}>{i['name']}</td>
+                <td id = {index + "|gender"}>{i['gender']}</td>
+                <td id = {index + "|rank"}>{i['rank']}</td>
+                <td id = {index + "|hotel"}>{i['hotel']}</td>
+                <td id = {index + "|salary"}>{i['salary']}</td>
               </tr>
             )})
           }
@@ -607,8 +612,13 @@ var ManagerHumanResources = React.createClass({
     )
   },
   updateInfo: function(data){
+    var num = []
+    for (var i = 0; i < data.length; ++i){
+      num.push(0)
+    }
     this.setState({
-      staffInfo: data
+      staffInfo: data,
+      selectedStaff: num
     })
   },
   handleSort: function(ev){
@@ -640,6 +650,14 @@ var ManagerHumanResources = React.createClass({
         }
       }
     }
+  },
+  handleChangeSalary: function(ev){
+    var id = ev.target.id.split("|")[0]
+    var selected = this.state.selectedStaff
+    selected[id] = 1 - selected[id]
+    this.setState({
+      selectedStaff: selected
+    })
   }
 })
 

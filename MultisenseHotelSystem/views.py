@@ -333,7 +333,7 @@ def getStaffInfo(request):
 	staff = Staff.objects.all()
 	for s in staff:
 		if s.staff_position.find("manager") == -1:
-			tmp = {'name': s.staff_name, 'gender': s.staff_gender, 'rank': s.staff_rank, 'hotel': s.staff_hotel}
+			tmp = {'name': s.staff_name, 'gender': s.staff_gender, 'rank': s.staff_rank, 'hotel': s.staff_hotel, 'salary': s.staff_salary}
 			res['staff'].append(tmp)
 	return JsonResponse(res, safe=False)
 

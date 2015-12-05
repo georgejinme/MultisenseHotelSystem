@@ -34,5 +34,6 @@ class Staff(models.Model):
 	staff_rank = models.CharField(max_length = 20)
 	staff_position = models.CharField(max_length = 20)
 	staff_hotel = models.CharField(max_length = 100)
+	staff_salary = models.IntegerField()
 	def __unicode__(self):
 		return str(self.id) + "|" + self.staff_name
