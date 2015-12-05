@@ -9,6 +9,7 @@ from MultisenseHotelSystem.models import Room
 from MultisenseHotelSystem.models import SalesInfo
 from MultisenseHotelSystem.models import Staff
 from MultisenseHotelSystem.models import Receptionist
+from MultisenseHotelSystem.models import Customer
 from django.utils import timezone
 import datetime
 import time
@@ -160,7 +161,10 @@ def register(request):
 		else:
 			user = User.objects.create_user(username, email, password)
 			user.is_staff = False
-			user.first_name = "manager"
+			user.first_name = "Customer"
+			user.save()
+			c = Customer(name = username, gender = "male", email = email, address = "Shanghai Dongchuan Road", passpord = "310114199411023811", tel = "18017126712", authorityUser = user)
+			c.save()
 			return JsonResponse("Regist Success", safe=False)
 	else:
 		return JsonResponse("Regist Fail", safe=False)

@@ -4,6 +4,7 @@ from .models import Room
 from .models import SalesInfo
 from .models import Staff
 from .models import Receptionist
+from .models import Customer
 
 class HotelAdmin(admin.ModelAdmin):
 	list_display = ("room_number", "room_type", "room_account", "room_status",)
@@ -19,9 +20,13 @@ class StaffAdmin(admin.ModelAdmin):
 
 class ReceptionistAdmin(admin.ModelAdmin):
 	list_display = ("name", "gender", "address", "hotel", "authorityUser")
+
+class CustomerAdmin(admin.ModelAdmin):
+	list_display = ("name", "gender", "address", "tel", "passpord", "email", "hotel", "authorityUser")
 admin.site.register(Hotel)
 admin.site.register(Room)
 admin.site.register(SalesInfo)
 admin.site.register(Staff)
 admin.site.register(Receptionist)
+admin.site.register(Customer)
 # Register your models here.
