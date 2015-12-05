@@ -567,10 +567,13 @@ var ManagerHumanResources = React.createClass({
   getInitialState: function(){
     return {
       staffInfo: [],
+      showedStaffInfo: [],
       selectedStaff: [],
       sort: 1,
       salary: "",
-      errormsg: ""
+      errormsg: "",
+      ranks: [],
+      hotels: [],
     }
   },
   componentWillMount: function(){
@@ -583,21 +586,48 @@ var ManagerHumanResources = React.createClass({
     var handleChangeSalary = this.handleChangeSalary
     var status = ['nonselected', 'selected']
     var selected = this.state.selectedStaff
+    var ranks = this.state.ranks
+    var hotels = this.state.hotels
+    var handleFilter = this.handleFilter
     return (
       <div className = "humanResources">
         <table className="table table-striped table-hover ">
           <thead>
             <tr>
-              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "name">Name</a></th>
-              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "gender">Gender</a></th>
-              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "rank">Rank</a></th>
-              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "hotel">Hotel</a></th>
-              <th><a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "salary">Salary</a></th>
+              <th><a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "name">Name</a></th>
+              <th><a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "gender">Gender</a></th>
+              <th>
+                <div className = "btn-group">
+                  <a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "rank">Rank</a>
+                  <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle dropButton" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+                  <ul className="dropdown-menu">
+                  {
+                    ranks.map(function(i, index){
+                      return <li onClick = {handleFilter}><a id = {i + "|rank"} href="javascript:void(0);">{i}</a></li>
+                    })
+                  }
+                  </ul>
+                </div>
+              </th>
+              <th>
+                <div className = "btn-group">
+                  <a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "hotel">Hotel</a>
+                  <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle dropButton" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+                  <ul className="dropdown-menu">
+                    {
+                    hotels.map(function(i, index){
+                      return <li onClick = {handleFilter}><a id = {i + "|hotel"} href="javascript:void(0);">{i}</a></li>
+                    })
+                  }
+                  </ul>
+                </div>
+              </th>
+              <th><a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "salary">Salary</a></th>
             </tr>
           </thead>
           <tbody>
           {
-            this.state.staffInfo.map(function(i, index){
+            this.state.showedStaffInfo.map(function(i, index){
             return (
               <tr onClick = {handleChangeSalary} className = {status[selected[index]]}>
                 <td id = {index + "|name"}>{i['name']}</td>
@@ -627,21 +657,32 @@ var ManagerHumanResources = React.createClass({
   },
   updateInfo: function(data){
     var num = []
+    var rank = []
+    var hotel = []
     for (var i = 0; i < data.length; ++i){
       num.push(0)
+      if (rank.indexOf(data[i]['rank']) == -1){
+        rank.push(data[i]['rank'])
+      }
+      if (hotel.indexOf(data[i]['hotel']) == -1){
+        hotel.push(data[i]['hotel'])
+      }
     }
     this.setState({
       staffInfo: data,
-      selectedStaff: num
+      selectedStaff: num,
+      ranks: rank,
+      hotels: hotel,
+      showedStaffInfo: data
     })
   },
   handleSort: function(ev){
-    var staff = this.state.staffInfo
+    var staff = this.state.showedStaffInfo
     var way = this.state.sort
     staff.sort(this.sortStaff(ev.target.id, 1 - way))
     this.setState({
       sort: 1 - way,
-      staffInfo: staff
+      showedStaffInfo: staff
     })
   },
   sortStaff: function(type, direction){
@@ -680,11 +721,13 @@ var ManagerHumanResources = React.createClass({
   },
   salaryButtonHandler: function(){
     if (!isNaN(this.state.salary) && this.state.salary != ""){
-      var staff = this.state.staffInfo
+      var staff = this.state.showedStaffInfo
       var selected = this.state.selectedStaff
       var name = []
       var error = ""
-      for (var i = 0; i < this.state.selectedStaff.length; ++i){
+      var newData = []
+      var setstate = this.updateFilterInfo
+      for (var i = 0; i < staff.length; ++i){
         if (selected[i] == 1){
           staff[i]['salary'] = this.state.salary
           selected[i] = 0
@@ -702,19 +745,41 @@ var ManagerHumanResources = React.createClass({
             error = "Unknown error"
           }else{
             error = "Success"
+            $.get("/getStaffInfo/", function(data){
+              setstate(selected, data['staff'], error, staff)
+            })
           }
         })
       }
-      this.setState({
-        selectedStaff: selected,
-        staffInfo: staff,
-        errormsg: error
-      })
     }else{
       this.setState({
         errormsg: "not a number"
       })
     }
+  },
+  handleFilter: function(ev){
+    var ele = ev.target.id.split("|")[0]
+    var type = ev.target.id.split("|")[1]
+    var staff = []
+    var selected = []
+    for (var i = 0; i < this.state.staffInfo.length; ++i){
+      if (this.state.staffInfo[i][type] == ele){
+        staff.push(this.state.staffInfo[i])
+        selected.push(0)
+      }
+    }
+    this.setState({
+      showedStaffInfo: staff,
+      selectedStaff: selected
+    })
+  },
+  updateFilterInfo: function(selected, data, error, staff){
+    this.setState({
+      selectedStaff: selected,
+      staffInfo: data,
+      errormsg: error,
+      showedStaffInfo: staff
+    })   
   }
 })
 

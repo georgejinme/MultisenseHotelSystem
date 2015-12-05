@@ -220,11 +220,16 @@ body{
 
 .main .humanResources tr{
 	background: rgba(0,0,0,0) !important;
-	text-align:center;
+	text-align:left;
 }
 
-.main .humanResources .table .btn{
+
+.main .humanResources .table .btn-group{
 	width: 100%
+}
+
+.main .humanResources .table .sortButton{
+	width: 80%
 }
 
 .main .humanResources .selected td{
@@ -254,6 +259,7 @@ body{
 	margin-left: 0px;
 	margin-right: 20px;
 }
+
 
 
 
