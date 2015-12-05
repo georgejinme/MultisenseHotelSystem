@@ -31,4 +31,7 @@ urlpatterns = [
     url(r'^getHotelNameAndRoomType/', 'MultisenseHotelSystem.views.getHotelNameAndRoomType', name = "getHotelNameAndRoomType"),
     url(r'^getSalesInfoWithTime/', 'MultisenseHotelSystem.views.getSalesInfoWithTime', name = "getSalesInfoWithTime"),
     url(r'^getSalesInfoWithHotelAndType/', 'MultisenseHotelSystem.views.getSalesInfoWithHotelAndType', name = "getSalesInfoWithHotelAndType"),
+
+    #staff info
+    url(r'^getStaffInfo/', 'MultisenseHotelSystem.views.getStaffInfo', name = "getStaffInfo"),
 ]

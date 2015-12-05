@@ -208,5 +208,19 @@ body{
 	width: 97%;
 }
 
+.main .humanResources{
+	background-color: rgba(0,0,0,0.3);
+	margin-top: 20px;
+	width: 97%;
+}
+
+.main .humanResources .table{
+	color: white;
+}
+
+.main .humanResources tr{
+	background: rgba(0,0,0,0) !important
+}
+
 
 

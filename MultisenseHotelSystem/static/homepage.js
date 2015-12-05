@@ -53,6 +53,12 @@ var Main = React.createClass({
           <ManagerSalesInfo />
         </div>
       )
+    }else if (this.props.currentFunc == "Human Resources"){
+      return (
+        <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
+          <ManagerHumanResources />
+        </div>
+      )
     }else{
       return (
         <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
@@ -550,6 +556,59 @@ var ManagerSalesInfoChart = React.createClass({
         var canvas = document.getElementById("pieChart")
         var ctx = canvas.getContext("2d");
         var charts = new Chart(ctx).Pie(data, option);
+    })
+  }
+})
+
+/** 
+  manager human resources view
+*/
+var ManagerHumanResources = React.createClass({
+  getInitialState: function(){
+    return {
+      staffInfo: [],
+      selectedStaff: -1
+    }
+  },
+  componentWillMount: function(){
+    var update = this.updateInfo
+    $.get("/getStaffInfo/", function(data){
+      console.log(data['staff'].length)
+      update(data['staff'])
+    })
+  },
+  render: function(){
+    return (
+      <div className = "humanResources">
+        <table className="table table-striped table-hover ">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Rank</th>
+              <th>Hotel</th>
+            </tr>
+          </thead>
+          <tbody>
+          {
+            this.state.staffInfo.map(function(i, index){
+            return (
+              <tr>
+                <td>{i['name']}</td>
+                <td>{i['gender']}</td>
+                <td>{i['rank']}</td>
+                <td>{i['hotel']}</td>
+              </tr>
+            )})
+          }
+          </tbody>
+        </table>
+      </div>
+    )
+  },
+  updateInfo: function(data){
+    this.setState({
+      staffInfo: data
     })
   }
 })

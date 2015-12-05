@@ -327,5 +327,23 @@ def getSalesInfoWithHotelAndType(request):
 					break;
 	return JsonResponse(res, safe=False)
 
+# manager human resource staff info
+def getStaffInfo(request):
+	res = {'staff':[]}
+	staff = Staff.objects.all()
+	for s in staff:
+		if s.staff_position.find("manager") == -1:
+			tmp = {'name': s.staff_name, 'gender': s.staff_gender, 'rank': s.staff_rank, 'hotel': s.staff_hotel}
+			res['staff'].append(tmp)
+	return JsonResponse(res, safe=False)
+
+
+
+
+
+
+
+
+
 
 
