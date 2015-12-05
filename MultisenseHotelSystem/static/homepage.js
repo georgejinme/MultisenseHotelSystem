@@ -110,7 +110,7 @@ var HomePage = React.createClass({
     if (type == "Customer"){  
       funcs = ["Overview", "Reservation", "Recommendation", "Meals", "My Info"]
     }else if (type == "Receptionist"){
-      funcs = ["Overview", "Rooms", "My Info"]
+      funcs = ["Overview", "Rooms", "Check", "My Info"]
     }else{
       funcs = ["Overview", "Sales Info", "Human Resources", "My Info"]
     }

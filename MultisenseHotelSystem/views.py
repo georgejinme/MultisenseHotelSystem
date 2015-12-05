@@ -8,6 +8,7 @@ from MultisenseHotelSystem.models import Hotel
 from MultisenseHotelSystem.models import Room
 from MultisenseHotelSystem.models import SalesInfo
 from MultisenseHotelSystem.models import Staff
+from MultisenseHotelSystem.models import Receptionist
 from django.utils import timezone
 import datetime
 import time
@@ -122,6 +123,10 @@ def initial(request):
 		s = Staff(staff_name = line[1], staff_gender = line[2], staff_rank = line[3], staff_position = line[4], staff_hotel = hotelname[int(line[5]) - 1])
 		s.save()
 	csvfile.close()'''
+	'''u = User.objects.get(username = "xinr")
+	r = Receptionist(name = "xinr", gender = "female", address = "Shanghai Dongchuan Road No.800", hotel = "Magic Castle Hotel", authorityUser = u)
+	r.save()
+	print User.objects.get(username = "xinr")'''
 	return HttpResponse("initial error: you have already initialized.")
 
 

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Room(models.Model):
@@ -37,3 +37,12 @@ class Staff(models.Model):
 	staff_salary = models.IntegerField()
 	def __unicode__(self):
 		return str(self.id) + "|" + self.staff_name
+
+class Receptionist(models.Model):
+	name = models.CharField(max_length = 40)
+	gender = models.CharField(max_length = 10)
+	address = models.CharField(max_length = 500)
+	hotel = models.CharField(max_length = 100)
+	authorityUser = models.OneToOneField(User)
+	def __unicode__(self):
+		return str(self.id) + "|" + self.name
