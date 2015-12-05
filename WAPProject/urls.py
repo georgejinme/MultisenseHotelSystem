@@ -35,4 +35,8 @@ urlpatterns = [
     #staff info
     url(r'^getStaffInfo/', 'MultisenseHotelSystem.views.getStaffInfo', name = "getStaffInfo"),
     url(r'^changeStaffSalary/', 'MultisenseHotelSystem.views.changeStaffSalary', name = "changeStaffSalary"),
+
+    #today's bill info
+    url(r'^todayInfo/', 'MultisenseHotelSystem.views.todayInfo', name = "todayInfo"),
+    url(r'^hotelInfo/', 'MultisenseHotelSystem.views.hotelInfo', name = "hotelInfo"),
 ]

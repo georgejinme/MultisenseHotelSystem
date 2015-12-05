@@ -260,6 +260,33 @@ body{
 	margin-right: 20px;
 }
 
+.main .checkBill{
+	margin-top: 20px;
+	width: 97%;
+}
 
+.main .checkBill .today h1{
+	color: white;
+	font-size: 100px;
+	margin-left: 15px;
+}
+
+.main .checkBill .bills{
+	background-color: rgba(0,0,0,0.3);
+	height: 450px;
+}
+.main .checkBill .chart{
+	margin-top: 10px;
+	height: 96%
+}
+
+.main .checkBill #billChart{
+	height: 100%;
+	width: 100%;
+}
+
+.main .checkBill .details{
+	color: white;
+}
 
 

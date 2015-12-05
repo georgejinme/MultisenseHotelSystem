@@ -350,8 +350,17 @@ def changeStaffSalary(request):
 	return JsonResponse({"success": True}, safe=False)
 
 
+# receptionist check bill
+def todayInfo(request):
+	res = {'today': ""}
+	currTimeUnix = time.localtime()
+	currtime = time.strftime("%Y-%m-%d %H:%M:%S", currTimeUnix)
+	res['today'] = currtime
+	return JsonResponse(res, safe=False)
 
-
+def hotelInfo(request):
+	res = {"hotel": request.user.receptionist.hotel}
+	return JsonResponse(res, safe=False)
 
 
 

@@ -59,6 +59,12 @@ var Main = React.createClass({
           <ManagerHumanResources />
         </div>
       )
+    }else if (this.props.currentFunc == "Check"){
+      return (
+        <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
+          <ReceptionistCheckBill />
+        </div>
+      )
     }else{
       return (
         <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
@@ -783,7 +789,100 @@ var ManagerHumanResources = React.createClass({
   }
 })
 
-
+/** 
+  Receptionist Check Bill View
+*/
+var ReceptionistCheckBill = React.createClass({
+  getInitialState: function(){
+    return {
+      date: "",
+      bill: [],
+      types: []
+    }
+  },
+  componentWillMount: function(){
+    var updateDate = this.updateDate
+    $.get("/todayInfo/", function(data){
+      updateDate(data['today'].split(" ")[0])
+    })
+  },
+  render: function(){
+    var total = 0
+    var type = this.state.types
+    for (var i = 0; i < this.state.bill.length; ++i){
+      total += this.state.bill[i]
+    }
+    return (
+      <div className = "checkBill">
+        <div className = "today">
+          <h1>{this.state.date}</h1>
+        </div>
+        <hr/>
+        <div className = "bills row">
+          <div className = "chart col-sm-7 col-md-7 col-lg-7">
+            <canvas id="billChart"></canvas>
+          </div>
+          <div className = "details col-sm-5 col-md-5 col-lg-5">
+            <h1>Total Amount: {total}</h1>
+            <hr/>
+            {
+              this.state.bill.map(function(i, index){
+                return <h2>{type[index]}: {i}</h2>
+              })
+            }
+          </div>
+        </div>
+      </div>
+    )
+  },
+  componentDidMount: function(){
+    var updateBill = this.updateBill
+    $.get("/hotelInfo/", function(data){
+      $.post("/getSalesInfoWithHotelAndType/",{
+        hotel: data['hotel'],
+        type: "ALL",
+        //change time to "Today"
+        time: "One Week",
+        priority: "hotel"
+      }, function(returnData){
+        console.log(returnData)
+        var data = []
+        var colors = ["#FFE4B5", "#FF4040", "#76EE00", "#556B2F", "#4169E1", "#00E5EE", "#8B3626", "#8C8C8C",
+                      "#9B30FF", "#EEEE00", "#2E8B57", "#00EE76", "#0000FF", "#87CEFA", "#8B4789", "#B8860B",
+                      "#DEB887", "#FFFF00", "#FF6EB4", "#262626", "#48D1CC"]
+        var highlightColors = ["#FFEBCD", "#FF6A6A", "#7CFC00", "#548B54", "#4876FF", "#00F5FF", "#8B4500", "#A8A8A8",
+                              "#9F79EE", "#F0E68C", "#3CB371", "#00FF00", "#1E90FF", "#87CEFF", "#8B668B", "#CD9B1D",
+                              "#EEC591", "#FFF68F", "#FF83FA", "#474747", "#40E0D0"]
+        for (var i = 0; i < returnData['type'].length; ++i){
+          data.push({
+            value: returnData['amount'][i],
+            color: colors[i],
+            highlight: highlightColors[i],
+            label: returnData['type'][i]
+          })
+        }           
+        var option = {
+          segmentShowStroke: false
+        }
+        var canvas = document.getElementById("billChart")
+        var ctx = canvas.getContext("2d");
+        var charts = new Chart(ctx).Pie(data, option);
+        updateBill(returnData['amount'], returnData['type'])
+      })
+    })
+  },
+  updateDate: function(date){
+    this.setState({
+      date: date
+    })
+  },
+  updateBill: function(bill, type){
+    this.setState({
+      bill: bill,
+      types: type
+    })
+  }
+})
 
 
 React.render(
