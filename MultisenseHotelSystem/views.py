@@ -7,9 +7,11 @@ from django.contrib.auth import logout as auth_logout
 from MultisenseHotelSystem.models import Hotel
 from MultisenseHotelSystem.models import Room
 from MultisenseHotelSystem.models import SalesInfo
+from MultisenseHotelSystem.models import Staff
 from django.utils import timezone
 import datetime
 import time
+import csv
 
 #initial database
 def initial(request):
@@ -112,6 +114,14 @@ def initial(request):
 		s = SalesInfo(sale_number = 230, sale_time = int(currtime), sale_type = "SUITE", sale_hotel = "The Mark Magic")
 		s.save()
 	return HttpResponse("initial success")'''
+	'''csvfile = file('/Users/gougoumemeda/WAPProject/MultisenseHotelSystem/static/csv/STAFF_MST.csv', 'rb')
+	reader = csv.reader(csvfile)
+	for line in reader:
+		if (line[5] == 'hotel_id'):
+			continue
+		s = Staff(staff_name = line[1], staff_gender = line[2], staff_rank = line[3], staff_position = line[4], staff_hotel = hotelname[int(line[5]) - 1])
+		s.save()
+	csvfile.close()'''
 	return HttpResponse("initial error: you have already initialized.")
 
 

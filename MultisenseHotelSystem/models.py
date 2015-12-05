@@ -27,3 +27,12 @@ class SalesInfo(models.Model):
 	sale_hotel = models.CharField(max_length = 100)
 	def __unicode__(self):
 		return str(self.id)
+
+class Staff(models.Model):
+	staff_name = models.CharField(max_length = 40)
+	staff_gender = models.CharField(max_length = 10)
+	staff_rank = models.CharField(max_length = 20)
+	staff_position = models.CharField(max_length = 20)
+	staff_hotel = models.CharField(max_length = 100)
+	def __unicode__(self):
+		return str(self.id) + "|" + self.staff_name
