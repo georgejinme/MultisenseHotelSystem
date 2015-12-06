@@ -462,6 +462,9 @@ var CustomerMeal = React.createClass({
     var rowsNum = []
     var mealName = this.state.mealName
     var mealPrice = this.state.mealPrice
+    var mealNum = this.state.mealNum
+    var leftButton = this.reduceNum
+    var rightButton = this.increaseNum
     for (var i = 0; i <= this.state.mealName.length / 3; ++i){
       rowsNum.push(i)
     }
@@ -472,8 +475,11 @@ var CustomerMeal = React.createClass({
           rowsNum.map(function(i, index){
             var mealname = mealName
             var mealprice = mealPrice
+            var num = mealNum
             var left = "-"
             var right = "+"
+            var reduce = leftButton
+            var increase = rightButton
             return (
               <div className = "mealRow row">
               {
@@ -492,11 +498,11 @@ var CustomerMeal = React.createClass({
                         <p className = "mealname">{mealname[a]}</p>
                         <p className = "mealprice">Price: {mealprice[a]}</p>
                         <div className = "mealorder row">
-                          <a href="#" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2">{left}</a>
+                          <a href="javascript:void(0);" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2" id = {a + "|left"} onClick = {reduce}>{left}</a>
                           <div className = "col-sm-8 col-md-8 col-lg-8 mealNumLabel">
-                            <input type = "text" className = "form-control" placeholder="Amount" />
+                            <input type = "text" className = "form-control" placeholder="Amount" value = {num[a]} />
                           </div>
-                          <a href="#" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2">{right}</a>
+                          <a href="javascript:void(0);" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2" id = {a + "|right"} onClick = {increase}>{right}</a>
                         </div>
                       </div>
                     )
@@ -530,6 +536,24 @@ var CustomerMeal = React.createClass({
     this.setState({
       mealName: info['name'],
       mealPrice: info['price'],
+      mealNum: num
+    })
+  },
+  reduceNum: function(ev){
+    var id = ev.target.id.split("|")[0]
+    var num = this.state.mealNum
+    if (num[id] > 0){
+      num[id] -= 1
+      this.setState({
+        mealNum: num
+      })
+    }
+  },
+  increaseNum: function(ev){
+    var id = ev.target.id.split("|")[0]
+    var num = this.state.mealNum
+    num[id] += 1
+    this.setState({
       mealNum: num
     })
   }
