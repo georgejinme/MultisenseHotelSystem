@@ -51,4 +51,6 @@ urlpatterns = [
 
     #checkin checkout
     url(r'^roomInfoForReceptionist/', 'MultisenseHotelSystem.views.roomInfoForReceptionist', name = "roomInfoForReceptionist"),
+    url(r'^checkin/', 'MultisenseHotelSystem.views.checkin', name = "checkin"),
+    url(r'^checkout/', 'MultisenseHotelSystem.views.checkout', name = "checkout"),
 ]

@@ -1133,8 +1133,7 @@ var ReceptionistCheckBill = React.createClass({
       $.post("/getSalesInfoWithHotelAndType/",{
         hotel: data['hotel'],
         type: "ALL",
-        //change time to "Today"
-        time: "One Week",
+        time: "Today",
         priority: "hotel"
       }, function(returnData){
         console.log(returnData)
@@ -1199,6 +1198,7 @@ var ReceptionistCheckinCheckout = React.createClass({
     var types = this.state.types
     var status = this.state.status
     var handleFilter = this.handleFilter
+    var checkInCheckOut = this.checkInCheckOut
     return (
       <div className = "checkincheckout">
         <table className="table table-striped table-hover ">
@@ -1238,15 +1238,20 @@ var ReceptionistCheckinCheckout = React.createClass({
           <tbody>
           {
             this.state.showedRoomInfo.map(function(i, index){
-            return (
-              <tr>
-                <td>{i['number']}</td>
-                <td>{i['type']}</td>
-                <td>{i['customer']}</td>
-                <td>{i['status']}</td>
-                <td>{i['action']}</td>
-              </tr>
-            )})
+              var able = ""
+              if (i['status'] == 'available'){
+                able = "disabled "
+              }
+              return (
+                <tr>
+                  <td>{i['number']}</td>
+                  <td>{i['type']}</td>
+                  <td>{i['customer']}</td>
+                  <td>{i['status']}</td>
+                  <td><a href="javascript:void(0);" className={able + "btn btn-primary btn-xs"} onClick = {checkInCheckOut} id = {i['action'] + "|" + i['number']}>{i['action']}</a></td>
+                </tr>
+              )
+            })
           }
           </tbody>
         </table>
@@ -1301,6 +1306,30 @@ var ReceptionistCheckinCheckout = React.createClass({
     this.setState({
       showedRoomInfo: staff,
     })
+  },
+  checkInCheckOut: function(ev){
+    var updateRoomInfo = this.updateRoomInfo
+    if (ev.target.id.split("|")[0] == "check-out"){
+      $.post("/checkout/", {
+        number: ev.target.id.split("|")[1]
+      }, function(returnData){
+        if (returnData['success']){
+          $.get("/roomInfoForReceptionist/", function(returnData){
+            updateRoomInfo(returnData['room'])
+          })
+        }
+      })
+    }else if (ev.target.id.split("|")[0] == "check-in"){
+      $.post("/checkin/", {
+        number: ev.target.id.split("|")[1]
+      }, function(returnData){
+        if (returnData['success']){
+          $.get("/roomInfoForReceptionist/", function(returnData){
+            updateRoomInfo(returnData['room'])
+          })
+        }
+      })
+    }
   },
 })
 

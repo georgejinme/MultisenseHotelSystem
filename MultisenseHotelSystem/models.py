@@ -63,7 +63,7 @@ class Receptionist(models.Model):
 
 class Customer(models.Model):
 	name = models.CharField(max_length = 40)
-	gender = models.CharField(max_length = 10)
+	gender = models.CharField(max_length = 1000)
 	email = models.CharField(max_length = 40)
 	address = models.CharField(max_length = 500)
 	hotel = models.ForeignKey(Room, null = True, blank=True)

@@ -205,7 +205,7 @@ def getHotelNameAndRoomType(request):
 def getSalesInfoWithTime(request):
 	res = {'timeLabel':[], 'ammount': []}
 	currtime = time.mktime(datetime.datetime.now().timetuple())
-	sales = SalesInfo.objects.all()
+	sales = SalesInfo.objects.all().order_by("-sale_time")
 	if (request.POST['time'] == "ALL"):
 		currYear = time.localtime().tm_year
 		for i in range(currYear - 4, currYear + 1):
@@ -272,9 +272,9 @@ def getSalesInfoWithHotelAndType(request):
 	sales = ""
 	if (hotel == "ALL"):
 		if (typeN != "ALL"):
-			sales = SalesInfo.objects.filter(sale_type=typeN)
+			sales = SalesInfo.objects.filter(sale_type=typeN).order_by("-sale_time")
 		else:
-			sales = SalesInfo.objects.all()
+			sales = SalesInfo.objects.all().order_by("-sale_time")
 		for i in Hotel.objects.all():
 			res['hotel'].append(i.hotel_name)
 			res['amount'].append(0)
@@ -310,7 +310,7 @@ def getSalesInfoWithHotelAndType(request):
 				else:
 					break;
 	else:
-		sales = SalesInfo.objects.filter(sale_hotel=hotel)
+		sales = SalesInfo.objects.filter(sale_hotel=hotel).order_by("-sale_time")
 		res['type'] = ["SINGLE", "DOUBLE", "SEMIDOUBLE", "TWIN", "TRIPLE", "SUITE"]
 		res['amount'] = [0, 0, 0, 0, 0, 0]
 		if request.POST['time'] == "ALL":
@@ -452,3 +452,25 @@ def roomInfoForReceptionist(request):
 		res['room'].append(tmp)
 	return JsonResponse(res, safe=False)
 
+def checkin(request):
+	currtime = time.mktime(datetime.datetime.now().timetuple())
+	num = request.POST['number']
+	hotel = request.user.receptionist.hotel
+	room = Hotel.objects.get(hotel_name = hotel).hotel_room.get(room_number = num)
+	room.room_status = "occupied"
+	room.save()
+	s = SalesInfo(sale_number = room.room_account, sale_time = int(currtime), sale_type = room.room_type, sale_hotel = hotel)
+	s.save()
+	return JsonResponse({"success": True}, safe=False)
+
+def checkout(request):
+	num = request.POST['number']
+	hotel = request.user.receptionist.hotel
+	room = Hotel.objects.get(hotel_name = hotel).hotel_room.get(room_number = num)
+	room.room_status = "available"
+	room.save()
+	if room.customer_set.all().exists():
+		user = room.customer_set.all()[0]
+		user.hotel = None
+		user.save()
+	return JsonResponse({"success": True}, safe=False)
