@@ -1185,7 +1185,8 @@ var ReceptionistCheckinCheckout = React.createClass({
       types: ["SINGLE", "DOUBLE", "SEMIDOUBLE", "TWIN", "TRIPLE", "SUITE"],
       status: ['available', 'booked', 'occupied'],
       roomInfo: [],
-      showedRoomInfo: []
+      showedRoomInfo: [],
+      sort: 1
     }
   },
   componentWillMount: function(){
@@ -1225,7 +1226,7 @@ var ReceptionistCheckinCheckout = React.createClass({
                   <ul className="dropdown-menu">
                     {
                     status.map(function(i, index){
-                      return <li onClick = {handleFilter}><a id = {i + "|hotel"} href="javascript:void(0);">{i}</a></li>
+                      return <li onClick = {handleFilter}><a id = {i + "|status"} href="javascript:void(0);">{i}</a></li>
                     })
                   }
                   </ul>
@@ -1257,7 +1258,50 @@ var ReceptionistCheckinCheckout = React.createClass({
       roomInfo: info,
       showedRoomInfo: info
     })
-  }
+  },
+  handleSort: function(ev){
+    var staff = this.state.showedRoomInfo
+    var way = this.state.sort
+    staff.sort(this.sortStaff(ev.target.id, 1 - way))
+    this.setState({
+      sort: 1 - way,
+      showedRoomInfo: staff
+    })
+  },
+  sortStaff: function(type, direction){
+    return function(a, b){
+      if (direction == 0){
+        if (a[type] > b[type]){
+          return -1
+        }else if (a[type] == b[type]){
+          return 0
+        }else{
+          return 1
+        }
+      }else{
+        if (a[type] > b[type]){
+          return 1
+        }else if (a[type] == b[type]){
+          return 0
+        }else{
+          return -1
+        }
+      }
+    }
+  },
+  handleFilter: function(ev){
+    var ele = ev.target.id.split("|")[0]
+    var type = ev.target.id.split("|")[1]
+    var staff = []
+    for (var i = 0; i < this.state.roomInfo.length; ++i){
+      if (this.state.roomInfo[i][type] == ele){
+        staff.push(this.state.roomInfo[i])
+      }
+    }
+    this.setState({
+      showedRoomInfo: staff,
+    })
+  },
 })
 
 
