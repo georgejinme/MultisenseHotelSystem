@@ -414,4 +414,28 @@ body{
 	color: white;
 }
 
+.main .checkincheckout{
+	background-color: rgba(0,0,0,0.3);
+	margin-top: 20px;
+	width: 97%;
+}
+
+.main .checkincheckout .table{
+	color: white;
+}
+
+.main .checkincheckout tr{
+	background: rgba(0,0,0,0) !important;
+	text-align:left;
+}
+
+
+.main .checkincheckout .table .btn-group{
+	width: 100%
+}
+
+.main .checkincheckout .table .sortButton{
+	width: 80%
+}
+
 

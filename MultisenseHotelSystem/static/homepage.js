@@ -71,6 +71,12 @@ var Main = React.createClass({
           <CustomerMeal />
         </div>
       )
+    }else if (this.props.currentFunc == "Rooms"){
+      return (
+        <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
+          <ReceptionistCheckinCheckout />
+        </div>
+      )
     }else{
       return (
         <div className = "col-sm-9 col-md-9 col-lg-9 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 main">
@@ -890,7 +896,7 @@ var ManagerHumanResources = React.createClass({
               <th><a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "gender">Gender</a></th>
               <th>
                 <div className = "btn-group">
-                  <a href="#" className="btn btn-primary" onClick = {this.handleSort} id = "rank">Rank</a>
+                  <a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "rank">Rank</a>
                   <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle dropButton" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
                   <ul className="dropdown-menu">
                   {
@@ -1166,6 +1172,90 @@ var ReceptionistCheckBill = React.createClass({
     this.setState({
       bill: bill,
       types: type
+    })
+  }
+})
+
+/**
+  Receptionist Check-in Check-out View
+*/
+var ReceptionistCheckinCheckout = React.createClass({
+  getInitialState: function(){
+    return {
+      types: ["SINGLE", "DOUBLE", "SEMIDOUBLE", "TWIN", "TRIPLE", "SUITE"],
+      status: ['available', 'booked', 'occupied'],
+      roomInfo: [],
+      showedRoomInfo: []
+    }
+  },
+  componentWillMount: function(){
+    var updateRoomInfo = this.updateRoomInfo
+    $.get("/roomInfoForReceptionist/", function(returnData){
+      updateRoomInfo(returnData['room'])
+    })
+  },
+  render: function(){
+    var types = this.state.types
+    var status = this.state.status
+    var handleFilter = this.handleFilter
+    return (
+      <div className = "checkincheckout">
+        <table className="table table-striped table-hover ">
+          <thead>
+            <tr>
+              <th><a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "number">#</a></th>
+              <th>
+                <div className = "btn-group">
+                  <a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "type">Type</a>
+                  <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle dropButton" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+                  <ul className="dropdown-menu">
+                  {
+                    types.map(function(i, index){
+                      return <li onClick = {handleFilter}><a id = {i + "|type"} href="javascript:void(0);">{i}</a></li>
+                    })
+                  }
+                  </ul>
+                </div>
+              </th>
+              <th><a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "customer">Customer Name</a></th>
+              <th>
+                <div className = "btn-group">
+                  <a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "status">Status</a>
+                  <a href="javascript:void(0);" className="btn btn-primary dropdown-toggle dropButton" data-toggle="dropdown" aria-expanded="false"><span className="caret"></span></a>
+                  <ul className="dropdown-menu">
+                    {
+                    status.map(function(i, index){
+                      return <li onClick = {handleFilter}><a id = {i + "|hotel"} href="javascript:void(0);">{i}</a></li>
+                    })
+                  }
+                  </ul>
+                </div>
+              </th>
+              <th><a href="#" className="btn btn-primary sortButton" onClick = {this.handleSort} id = "action">Action</a></th>
+            </tr>
+          </thead>
+          <tbody>
+          {
+            this.state.showedRoomInfo.map(function(i, index){
+            return (
+              <tr>
+                <td>{i['number']}</td>
+                <td>{i['type']}</td>
+                <td>{i['customer']}</td>
+                <td>{i['status']}</td>
+                <td>{i['action']}</td>
+              </tr>
+            )})
+          }
+          </tbody>
+        </table>
+      </div>
+    )
+  },
+  updateRoomInfo: function(info){
+    this.setState({
+      roomInfo: info,
+      showedRoomInfo: info
     })
   }
 })

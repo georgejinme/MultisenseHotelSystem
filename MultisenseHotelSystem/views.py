@@ -434,4 +434,21 @@ def order(request):
 			request.user.customer.order.add(o)
 	return JsonResponse({"success": True}, safe=False)
 
+# Receptionist Checkin Checkout
+def roomInfoForReceptionist(request):
+	res = {'room': []}
+	hotel = request.user.receptionist.hotel
+	rooms = Hotel.objects.get(hotel_name = hotel).hotel_room.all()
+	for r in rooms:
+		tmp = {'number': r.room_number, 'type': r.room_type, 'status': r.room_status, 'customer': "", 'action': ""}
+		if r.customer_set.all().exists():
+			tmp['customer'] = r.customer_set.all()[0].name
+		if r.room_status == "available":
+			tmp['action'] = "available"
+		elif r.room_status == "booked":
+			tmp['action'] = "check-in"
+		elif r.room_status == "occupied":
+			tmp['action'] = "check-out"
+		res['room'].append(tmp)
+	return JsonResponse(res, safe=False)
 
