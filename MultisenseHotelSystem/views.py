@@ -11,6 +11,7 @@ from MultisenseHotelSystem.models import Staff
 from MultisenseHotelSystem.models import Receptionist
 from MultisenseHotelSystem.models import Customer
 from MultisenseHotelSystem.models import Meals
+from MultisenseHotelSystem.models import Order
 from django.utils import timezone
 import datetime
 import time
@@ -420,5 +421,17 @@ def getMealInfo(request):
 		res['name'].append(m.name)
 		res['price'].append(m.price)
 	return JsonResponse(res, safe=False) 
+
+def order(request):
+	name = request.POST['name'].split("|")
+	num = request.POST['num'].split("|")
+	for n in range(0, len(num)):
+		if int(num[n]) != 0:
+			meals = Meals.objects.get(name = name[n])
+			o = Order(number = int(num[n]), status = "receive")
+			o.meal = meals
+			o.save()
+			request.user.customer.order.add(o)
+	return JsonResponse({"success": True}, safe=False)
 
 

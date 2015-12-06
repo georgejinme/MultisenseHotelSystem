@@ -249,6 +249,31 @@ body{
 	color: white;
 }
 
+.main .meal .ordering .form-group{
+	padding: 0px;
+	margin: 0px;
+	width: 97%;
+	padding-bottom: 30px;
+}
+
+.main .meal .ordering label{
+	color: white;
+	padding: 0px;
+	padding-right: 30px;
+	height: 100%;
+	line-height: 3em
+}
+
+.main .orderSuccess{
+	color: white;
+}
+
+.main .meal .error{
+	padding-bottom: 30px;
+	color: white;
+	text-align: center;
+}
+
 .main .noauthority{
 	background-color: rgba(0,0,0,0.3);
 	margin-top: 20px;

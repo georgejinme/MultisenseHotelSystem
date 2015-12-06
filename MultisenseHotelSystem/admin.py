@@ -6,6 +6,7 @@ from .models import Staff
 from .models import Receptionist
 from .models import Customer
 from .models import Meals
+from .models import Order
 
 class HotelAdmin(admin.ModelAdmin):
 	list_display = ("room_number", "room_type", "room_account", "room_status",)
@@ -27,6 +28,9 @@ class CustomerAdmin(admin.ModelAdmin):
 
 class MealsAdmin(admin.ModelAdmin):
 	list_display = ("name", "price")
+class OrderAdmin(admin.ModelAdmin):
+	list_display = ("meal", "number")
+	
 admin.site.register(Hotel)
 admin.site.register(Room)
 admin.site.register(SalesInfo)
@@ -34,4 +38,5 @@ admin.site.register(Staff)
 admin.site.register(Receptionist)
 admin.site.register(Customer)
 admin.site.register(Meals)
+admin.site.register(Order)
 # Register your models here.

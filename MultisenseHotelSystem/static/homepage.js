@@ -443,7 +443,9 @@ var CustomerMeal = React.createClass({
       authority: false,
       mealName: [],
       mealPrice: [],
-      mealNum: []
+      mealNum: [],
+      errormsg: "",
+      page: 0
     }
   },
   componentWillMount: function(){
@@ -465,56 +467,77 @@ var CustomerMeal = React.createClass({
     var mealNum = this.state.mealNum
     var leftButton = this.reduceNum
     var rightButton = this.increaseNum
-    for (var i = 0; i <= this.state.mealName.length / 3; ++i){
+    var totalNum = 0
+    for (var i = 0; i <= mealName.length / 3; ++i){
       rowsNum.push(i)
     }
+    for (var i = 0; i < mealNum.length; ++i){
+      totalNum += mealNum[i] * mealPrice[i]
+    }
     if (this.state.authority == true){
-      return (
-        <div className = "meal">
-        {
-          rowsNum.map(function(i, index){
-            var mealname = mealName
-            var mealprice = mealPrice
-            var num = mealNum
-            var left = "-"
-            var right = "+"
-            var reduce = leftButton
-            var increase = rightButton
-            return (
-              <div className = "mealRow row">
-              {
-                [0 + 3 * i, 1 + 3 * i, 2 + 3 * i].map(function(a, b){
-                  if (a >= mealname.length){
-                    return (
-                      <div className = "mealItem col-sm-4 col-md-4 col-lg-4">
-                      </div>
-                    )
-                  }else{
-                    return (
-                      <div className = "mealItem col-sm-4 col-md-4 col-lg-4">
-                        <div className = "mealPhoto">
-                          <img src="/static/img/3.jpg" className="img-circle"></img>
+      if (this.state.page == 0){
+        return (
+          <div className = "meal">
+          {
+            rowsNum.map(function(i, index){
+              var mealname = mealName
+              var mealprice = mealPrice
+              var num = mealNum
+              var left = "-"
+              var right = "+"
+              var reduce = leftButton
+              var increase = rightButton
+              return (
+                <div className = "mealRow row">
+                {
+                  [0 + 3 * i, 1 + 3 * i, 2 + 3 * i].map(function(a, b){
+                    if (a >= mealname.length){
+                      return (
+                        <div className = "mealItem col-sm-4 col-md-4 col-lg-4">
                         </div>
-                        <p className = "mealname">{mealname[a]}</p>
-                        <p className = "mealprice">Price: {mealprice[a]}</p>
-                        <div className = "mealorder row">
-                          <a href="javascript:void(0);" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2" id = {a + "|left"} onClick = {reduce}>{left}</a>
-                          <div className = "col-sm-8 col-md-8 col-lg-8 mealNumLabel">
-                            <input type = "text" className = "form-control" placeholder="Amount" value = {num[a]} />
+                      )
+                    }else{
+                      return (
+                        <div className = "mealItem col-sm-4 col-md-4 col-lg-4">
+                          <div className = "mealPhoto">
+                            <img src="/static/img/3.jpg" className="img-circle"></img>
                           </div>
-                          <a href="javascript:void(0);" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2" id = {a + "|right"} onClick = {increase}>{right}</a>
+                          <p className = "mealname">{mealname[a]}</p>
+                          <p className = "mealprice">Price: {mealprice[a]}</p>
+                          <div className = "mealorder row">
+                            <a href="javascript:void(0);" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2" id = {a + "|left"} onClick = {reduce}>{left}</a>
+                            <div className = "col-sm-8 col-md-8 col-lg-8 mealNumLabel">
+                              <input type = "text" className = "form-control" placeholder="Amount" value = {num[a]} />
+                            </div>
+                            <a href="javascript:void(0);" className="btn btn-primary btn-xs col-sm-2 col-md-2 col-lg-2" id = {a + "|right"} onClick = {increase}>{right}</a>
+                          </div>
                         </div>
-                      </div>
-                    )
-                  }
-                })
-              }
+                      )
+                    }
+                  })
+                }
+                </div>
+              )
+            })
+          }
+            <form className = "form-horizontal ordering">
+              <div className = "form-group">
+                <label htmlFor="orderLabel" className="col-sm-10 col-md-10 col-lg-10 control-label">Total: {totalNum}</label>
+                <a href="javascript:void(0);" className="btn btn-primary col-sm-2 col-md-2 col-lg-2" onClick = {this.order}>Order</a>
               </div>
-            )
-          })
-        }
-        </div>
-      )
+            </form>
+            <div className = "error">
+              <p>{this.state.errormsg}</p>
+            </div>
+          </div>
+        )
+      }else{
+        return (
+          <div className = "orderSuccess">
+            <h1>Order Successfully</h1>
+          </div>
+        )
+      }
     }else{
       return (
         <div className = "noauthority">
@@ -554,7 +577,34 @@ var CustomerMeal = React.createClass({
     var num = this.state.mealNum
     num[id] += 1
     this.setState({
-      mealNum: num
+      mealNum: num,
+      errormsg: ""
+    })
+  },
+  order: function(){
+    var total = 0;
+    var orderSuccess = this.orderSuccess
+    for (var i = 0; i < this.state.mealNum.length; ++i){
+      total += this.state.mealNum[i]
+    }
+    if (total == 0){
+      this.setState({
+        errormsg: "You should at least order one thing."
+      })
+    }else{
+      $.post("/order/", {
+        name: this.state.mealName.join("|"),
+        num: this.state.mealNum.join("|")
+      }, function(returnData){
+        if (returnData['success']){
+          orderSuccess()
+        }
+      })
+    }
+  },
+  orderSuccess: function(){
+    this.setState({
+      page: 1
     })
   }
 })

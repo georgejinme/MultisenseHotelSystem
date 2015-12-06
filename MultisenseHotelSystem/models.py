@@ -34,6 +34,14 @@ class Meals(models.Model):
 	def __unicode__(self):
 		return str(self.id) + "|" + self.name + "|" + str(self.price)
 
+class Order(models.Model):
+	meal = models.ForeignKey(Meals, null = True, blank = True)
+	number = models.IntegerField()
+#receive doing sending
+	status = models.CharField(max_length = 30)
+	def __unicode__(self):
+		return str(self.id) + "|" + self.meal.name + "|" + str(self.number) + "|" + self.status
+
 class Staff(models.Model):
 	staff_name = models.CharField(max_length = 40)
 	staff_gender = models.CharField(max_length = 10)
@@ -62,7 +70,7 @@ class Customer(models.Model):
 	passpord = models.CharField(max_length = 100)
 	tel = models.CharField(max_length = 30)
 	authorityUser = models.OneToOneField(User)
-	meals = models.ManyToManyField(Meals)
+	order = models.ManyToManyField(Order)
 	def __unicode__(self):
 		return str(self.id) + "|" + self.name
 
